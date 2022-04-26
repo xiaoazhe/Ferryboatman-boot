@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Ferryman-Boot.iml" filepath="$PROJECT_DIR$/Ferryman-Boot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ferry-admin/ferry-admin.iml" filepath="$PROJECT_DIR$/ferry-admin/ferry-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ferry-common/ferry-common.iml" filepath="$PROJECT_DIR$/ferry-common/ferry-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ferry-core/ferry-core.iml" filepath="$PROJECT_DIR$/ferry-core/ferry-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ferry-db/ferry-db.iml" filepath="$PROJECT_DIR$/ferry-db/ferry-db.iml" />
+    </modules>
+  </component>
+</project>
