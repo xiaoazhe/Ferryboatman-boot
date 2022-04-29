@@ -1,7 +1,7 @@
 package com.ferry.admin.util;
 
 import com.alibaba.fastjson.JSON;
-import com.ferry.common.utils.StringUtils;
+import com.ferry.core.file.util.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ferry.blog.dto.FileConfig;
 import com.ferry.blog.service.FileService;
-import com.ferry.common.enums.StateEnums;
+import com.ferry.core.file.emums.StateEnums;
 import com.ferry.core.file.FileUploader;
 import com.ferry.core.file.GlobalFileUploader;
 import com.ferry.core.file.emums.FileUploadType;

@@ -1,8 +1,8 @@
 package com.ferry.blog.controller;
 
 import com.ferry.blog.service.GossipService;
-import com.ferry.common.enums.StateEnums;
-import com.ferry.common.utils.StringUtils;
+import com.ferry.core.file.emums.StateEnums;
+import com.ferry.core.file.util.StringUtils;
 import com.ferry.core.file.object.PageResult;
 import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;

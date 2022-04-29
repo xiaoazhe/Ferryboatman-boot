@@ -1,4 +1,4 @@
-package com.ferry.common.enums;
+package com.ferry.core.file.emums;
 
 
 public class FieldStatusEnum {

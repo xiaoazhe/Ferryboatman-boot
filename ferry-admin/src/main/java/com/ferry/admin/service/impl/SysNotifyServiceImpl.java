@@ -6,11 +6,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ferry.admin.service.SysNotifyService;
 import com.ferry.admin.util.SecurityUtils;
 import com.ferry.admin.vo.NotifyVo;
-import com.ferry.common.enums.FieldStatusEnum;
-import com.ferry.common.enums.NotifyType;
-import com.ferry.common.enums.StateEnums;
-import com.ferry.common.utils.IdWorker;
-import com.ferry.common.utils.StringUtils;
+import com.ferry.core.file.emums.FieldStatusEnum;
+import com.ferry.core.file.emums.NotifyType;
+import com.ferry.core.file.emums.StateEnums;
+import com.ferry.core.file.util.IdWorker;
+import com.ferry.core.file.util.StringUtils;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.server.admin.entity.SysNotify;
@@ -122,6 +122,9 @@ public class SysNotifyServiceImpl extends ServiceImpl <SysNotifyMapper, SysNotif
     @Override
     public List<SysNotify> getNoReadListByUserId() {
         String userName = SecurityUtils.getUsername();
+        if (Objects.isNull(userName)) {
+            return null;
+        }
         Long userId = sysUserMapper.findByName(userName).getId();
         QueryWrapper<SysNotify> query = new QueryWrapper<SysNotify>();
         query.eq(SysNotify.CRESARE_USER_ID, userId);

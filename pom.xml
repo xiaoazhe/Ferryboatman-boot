@@ -5,7 +5,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>ferry-admin</module>
-        <module>ferry-common</module>
         <module>ferry-db</module>
         <module>ferry-core</module>
     </modules>

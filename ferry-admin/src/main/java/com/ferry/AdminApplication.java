@@ -1,6 +1,6 @@
 package com.ferry;
 
-import com.ferry.common.utils.IdWorker;
+import com.ferry.core.file.util.IdWorker;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

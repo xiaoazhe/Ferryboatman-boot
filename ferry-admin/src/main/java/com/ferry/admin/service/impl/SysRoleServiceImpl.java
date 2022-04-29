@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ferry.admin.constant.SysConstants;
 import com.ferry.admin.service.SysRoleService;
-import com.ferry.common.enums.FieldStatusEnum;
+import com.ferry.core.file.emums.FieldStatusEnum;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.server.admin.entity.SysMenu;

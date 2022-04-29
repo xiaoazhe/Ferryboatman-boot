@@ -10,7 +10,7 @@ import com.ferry.admin.util.QRCodeUtil;
 import com.ferry.admin.util.SecurityUtils;
 import com.ferry.admin.vo.FaceLoginResult;
 import com.ferry.admin.vo.QRCode;
-import com.ferry.common.utils.IdWorker;
+import com.ferry.core.file.util.IdWorker;
 import com.ferry.server.admin.entity.SysUser;
 import com.ferry.server.admin.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;

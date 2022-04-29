@@ -1,8 +1,8 @@
 package com.ferry.blog.service.impl;
 
 import com.ferry.blog.service.GossipService;
-import com.ferry.common.utils.IdWorker;
-import com.ferry.common.utils.StringUtils;
+import com.ferry.core.file.util.IdWorker;
+import com.ferry.core.file.util.StringUtils;
 import com.ferry.server.blog.db.GossipDao;
 import com.ferry.server.blog.entity.Gossip;
 import org.springframework.beans.factory.annotation.Autowired;

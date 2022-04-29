@@ -1,4 +1,4 @@
-package com.ferry.common.utils;
+package com.ferry.core.file.util;
 
 
 /**

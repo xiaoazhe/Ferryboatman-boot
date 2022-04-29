@@ -1,7 +1,7 @@
 package com.ferry.blog.service.impl;
 
 import com.ferry.admin.config.UploadConfig;
-import com.ferry.common.enums.StateEnums;
+import com.ferry.core.file.emums.StateEnums;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.lang3.StringUtils;

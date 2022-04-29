@@ -1,7 +1,7 @@
 package com.ferry.blog.controller;
 
 import com.ferry.blog.service.MaterialService;
-import com.ferry.common.enums.StateEnums;
+import com.ferry.core.file.emums.StateEnums;
 import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.server.blog.entity.BlMaterial;

@@ -6,10 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ferry-common" />
         <module name="ferry-admin" />
-        <module name="ferry-core" />
         <module name="ferry-db" />
+        <module name="ferry-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

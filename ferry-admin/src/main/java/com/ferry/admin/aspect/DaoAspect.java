@@ -1,7 +1,7 @@
 package com.ferry.admin.aspect;
 
 import com.ferry.admin.util.SecurityUtils;
-import com.ferry.common.utils.StringUtils;
+import com.ferry.core.file.util.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -29,11 +29,11 @@ public class DaoAspect {
 	private static final String lastUpdateBy = "lastUpdateBy";
 	private static final String lastUpdateTime = "lastUpdateTime";
 
-	@Pointcut("execution(* com.ferry.*.*.mapper.*.update*(..))")
+	@Pointcut("execution(* com.ferry.server.*.mapper.*.update*(..))")
 	public void daoUpdate() {
 	}
 
-	@Pointcut("execution(* com.ferry.*.*.mapper.*.insert*(..))")
+	@Pointcut("execution(* com.ferry.server.*.mapper.*.insert*(..))")
 	public void daoCreate() {
 	}
 

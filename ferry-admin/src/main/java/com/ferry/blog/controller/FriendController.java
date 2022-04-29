@@ -1,7 +1,7 @@
 package com.ferry.blog.controller;
 
 import com.ferry.blog.service.FriendService;
-import com.ferry.common.utils.IdWorker;
+import com.ferry.core.file.util.IdWorker;
 import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.server.blog.entity.BlFriendLink;

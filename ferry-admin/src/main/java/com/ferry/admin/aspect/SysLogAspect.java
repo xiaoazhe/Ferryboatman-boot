@@ -38,15 +38,15 @@ public class SysLogAspect {
 	/**
 	 * 切入点
 	 */
-	@Pointcut("execution(public * com.ferry.*.*.*(..))")
+	@Pointcut("execution(public * com.ferry..*.*.*(..))")
 	private void commonPointcut() {
 	}
 
-	@Pointcut("execution( * com.ferry.*.controller.*.*(..))")//两个..代表所有子目录，最后括号里的两个..代表所有参数
+	@Pointcut("execution( * com.ferry.*.controller..*.*(..))")//两个..代表所有子目录，最后括号里的两个..代表所有参数
 	public void log() {
 	}
 
-	@Pointcut("execution(* com.ferry.*.*.service.*.*(..))")
+	@Pointcut("execution(* com.ferry.*.service..*.*(..))")
 	public void logPointCut() {
 
 	}
@@ -85,13 +85,13 @@ public class SysLogAspect {
 		if (null != attributes) {
 			HttpServletRequest request = attributes.getRequest();
 			// 记录下请求内容
-			logger.info("请求地址 :{} ", request.getRequestURL().toString());
-			logger.info("HTTP METHOD : {}", request.getMethod());
-			// 获取真实的ip地址
-			logger.info("IP : {}", IPUtils.getIpAddr(request));
-			logger.info("CLASS_METHOD : {}", joinPoint.getSignature().getDeclaringTypeName() + "."
-					+ joinPoint.getSignature().getName());
-			logger.info("参数 : {}", Arrays.toString(joinPoint.getArgs()));
+//			logger.info("请求地址 :{} ", request.getRequestURL().toString());
+//			logger.info("HTTP METHOD : {}", request.getMethod());
+//			// 获取真实的ip地址
+//			logger.info("IP : {}", IPUtils.getIpAddr(request));
+//			logger.info("CLASS_METHOD : {}", joinPoint.getSignature().getDeclaringTypeName() + "."
+//					+ joinPoint.getSignature().getName());
+//			logger.info("参数 : {}", Arrays.toString(joinPoint.getArgs()));
 		}
 
 	}
@@ -99,7 +99,13 @@ public class SysLogAspect {
 	@AfterReturning(returning = "ret", pointcut = "log()")// returning的值和doAfterReturning的参数名一致
 	public void doAfterReturning(Object ret) {
 		// 处理完请求，返回内容(返回值太复杂时，打印的是物理存储空间的地址)
-		logger.info("返回值 :{} ", ret);
+		String r = new String(ret.toString());
+		if (r.length() > 200) {
+			logger.info("返回值 :{} ", r.substring(0, 200));
+		} else {
+			logger.info("返回值 :{} ", ret);
+		}
+
 	}
 
 	@Around("log()")
@@ -152,6 +158,14 @@ public class SysLogAspect {
 		sysLog.setUserName(userName);
 		// 执行时长(毫秒)
 		sysLog.setTime(time);
+		// 记录下请求内容
+		logger.info("请求地址 :{} ", request.getRequestURL().toString());
+		logger.info("HTTP METHOD : {}", request.getMethod());
+		// 获取真实的ip地址
+		logger.info("IP : {}", IPUtils.getIpAddr(request));
+		logger.info("CLASS_METHOD : {}", joinPoint.getSignature().getDeclaringTypeName() + "."
+				+ joinPoint.getSignature().getName());
+		logger.info("参数 : {}", sysLog.getParams());
 		// 保存系统日志
 		sysLogService.save(sysLog);
 	}
