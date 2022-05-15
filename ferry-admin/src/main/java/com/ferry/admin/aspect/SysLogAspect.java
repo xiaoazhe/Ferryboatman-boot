@@ -1,5 +1,6 @@
 package com.ferry.admin.aspect;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ferry.admin.service.SysLogService;
 import com.ferry.admin.util.HttpUtils;
@@ -103,7 +104,7 @@ public class SysLogAspect {
 		if (r.length() > 200) {
 			logger.info("返回值 :{} ", r.substring(0, 200));
 		} else {
-			logger.info("返回值 :{} ", ret);
+			logger.info("返回值 :{} ", JSON.toJSONString(ret));
 		}
 
 	}
