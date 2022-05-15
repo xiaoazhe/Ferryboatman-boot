@@ -56,9 +56,14 @@ public class SecurityUtils {
 		Authentication authentication = getAuthentication();
 		if(authentication != null) {
 			Object principal = authentication.getPrincipal();
-			if(principal != null && principal instanceof UserDetails) {
-				username = ((UserDetails) principal).getUsername();
+			if (principal != null) {
+				if(principal instanceof UserDetails) {
+					username = ((UserDetails) principal).getUsername();
+				} else {
+					username = principal.toString();
+				}
 			}
+
 		}
 		return username;
 	}

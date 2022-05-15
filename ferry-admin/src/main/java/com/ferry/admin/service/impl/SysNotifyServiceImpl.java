@@ -107,12 +107,12 @@ public class SysNotifyServiceImpl extends ServiceImpl <SysNotifyMapper, SysNotif
      */
     @Override
     public PageResult findPage(PageRequest pageRequest) {
-        String title = pageRequest.getParamValue(FieldStatusEnum.USERNAME);
+        String title = pageRequest.getParamValue(FieldStatusEnum.NAME);
         String userName = SecurityUtils.getUsername();
         Long userId = sysUserMapper.findByName(userName).getId();
         Page<SysNotify> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         QueryWrapper<SysNotify> queryWrapper = new QueryWrapper<SysNotify>();
-        queryWrapper.eq(!StringUtils.isBlank(title), SysNotify.COL_TITLE, title);
+        queryWrapper.like(!StringUtils.isBlank(title), SysNotify.COL_TITLE, title);
         queryWrapper.eq(SysNotify.CRESARE_USER_ID, userId).or().eq(SysNotify.USER_ID, userId);
         Page<SysNotify> userIPage = sysNotifyMapper.selectPage(page, queryWrapper);
         PageResult pageResult = new PageResult(userIPage);
