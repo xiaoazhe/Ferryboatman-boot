@@ -63,12 +63,6 @@ spring:
       channel:
         size: 25
     port: 15672
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        serviceName: Ferry-admin    # 注册到consul的服务名称
   servlet:
     multipart:
       max-file-size: 10MB
