@@ -2,6 +2,7 @@ package com.ferry.blog.controller;
 
 import com.ferry.blog.service.FriendService;
 import com.ferry.core.file.util.IdWorker;
+import com.ferry.core.file.util.StringUtils;
 import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.server.blog.entity.BlFriendLink;
@@ -52,7 +53,7 @@ public class FriendController {
     @PreAuthorize("hasAuthority('sys:friend:add')")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody BlFriendLink friendLink) {
-        if (friendLink.getUid() != null) {
+        if (StringUtils.isNotBlank(friendLink.getUid())) {
             friendLink.setUpdateTime(new Date());
             return Result.ok(friendService.updateById(friendLink));
         }
@@ -98,7 +99,7 @@ public class FriendController {
     @PreAuthorize("hasAuthority('sys:friend:delete')")
     @RequestMapping(value = "/deleteById/{id}", method = RequestMethod.DELETE)
     public Result deleteById(@PathVariable Integer id) {
-        return Result.ok(friendService.deleteById(id));
+        return Result.ok((Object) friendService.deleteById(id));
     }
 
     /**
@@ -111,7 +112,7 @@ public class FriendController {
     @PreAuthorize("hasAuthority('sys:friend:view')")
     @RequestMapping(value = "/enable/{id}", method = RequestMethod.PUT)
     public Result enable(@PathVariable Integer id) {
-        return Result.ok(friendService.enableById(id));
+        return Result.ok((Object) friendService.enableById(id));
     }
 
     /**
@@ -124,13 +125,13 @@ public class FriendController {
     @PreAuthorize("hasAuthority('sys:friend:view')")
     @RequestMapping(value = "/disable/{id}", method = RequestMethod.PUT)
     public Result disable(@PathVariable Integer id) {
-        return Result.ok(friendService.disableById(id));
+        return Result.ok((Object) friendService.disableById(id));
     }
 
     @ApiOperation(value = "删除")
     @PreAuthorize("hasAuthority('sys:friend:delete')")
     @PostMapping(value="/delete")
     public Result delete(@RequestBody List <BlFriendLink> friendLinks) {
-        return Result.ok(friendService.removeTypes(friendLinks));
+        return Result.ok((Object) friendService.removeTypes(friendLinks));
     }
 }
