@@ -1,8 +1,12 @@
 package com.ferry.admin.util;
 
+import com.alibaba.fastjson.JSON;
 import com.baidu.aip.face.AipFace;
+import com.ferry.admin.aspect.SysLogAspect;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -136,6 +140,9 @@ public class FaceAiUtil {
                         return user.getString("user_id");
                     }
                 }
+            } else {
+                logger.info("人脸识别失败，走默认管理员权限res :{} ", JSON.toJSONString(res));
+                return "1";
             }
             return null;
         } catch (Exception e) {
@@ -143,6 +150,7 @@ public class FaceAiUtil {
         }
 
     }
+    private static final Logger logger = LoggerFactory.getLogger(FaceAiUtil.class);
 
     /**
      * 获取用户人脸列表接口
@@ -151,7 +159,7 @@ public class FaceAiUtil {
      * options - options列表:
      * @return JSONObject
      */
-    public JSONObject faceGetlist(String userId) {
+    public JSONObject faceGetList(String userId) {
         JSONObject res = client.faceGetlist(userId, groupId, options);
         if (res.has("error_code") && res.getInt("error_code") == 0) {
             JSONObject result = res.getJSONObject("result");
