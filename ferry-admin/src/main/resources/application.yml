@@ -111,3 +111,10 @@ ai:
   groupId: FerryMan
 qr:
   url: http://localhost:8080/#/facelogin
+ferry:
+  recover:
+    datasource:
+      host: 121.5.129.126
+      userName: root
+      password: hcz123456789
+      database: ferry
