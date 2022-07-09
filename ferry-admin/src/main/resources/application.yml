@@ -110,7 +110,7 @@ ai:
   imageType: BASE64
   groupId: FerryMan
 qr:
-  url: http://localhost:8080/#/facelogin
+  url: http://121.5.129.126:8880/#/facelogin
 ferry:
   recover:
     datasource:
