@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/ferry-admin/ferry-admin.iml" filepath="$PROJECT_DIR$/ferry-admin/ferry-admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/ferry-core/ferry-core.iml" filepath="$PROJECT_DIR$/ferry-core/ferry-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/ferry-db/ferry-db.iml" filepath="$PROJECT_DIR$/ferry-db/ferry-db.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ferry-web/ferry-web.iml" filepath="$PROJECT_DIR$/ferry-web/ferry-web.iml" />
     </modules>
   </component>
 </project>

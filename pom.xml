@@ -7,6 +7,7 @@
         <module>ferry-admin</module>
         <module>ferry-db</module>
         <module>ferry-core</module>
+        <module>ferry-web</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
