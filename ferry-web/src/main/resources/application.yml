@@ -14,7 +14,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://121.5.129.126:3306/ferry?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false&serverTimezone=GMT
+      url: jdbc:mysql://121.5.129.126:3306/ferryman?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false&serverTimezone=GMT
       username: root
       password: hcz123456789
       filters: stat,wall,log4j,config
@@ -80,6 +80,7 @@ spring:
           auth: true
           enable: true
           required: true
+
 # 开放健康检查接口
 management:
   endpoints:

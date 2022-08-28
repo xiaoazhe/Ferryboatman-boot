@@ -27,7 +27,7 @@ public class BlBlog implements Serializable {
     /**
      * 唯一oid
      */
-    @TableId(value = "oid", type = IdType.AUTO)
+    @TableId(value = "oid")
     private Integer oid;
 
     /**

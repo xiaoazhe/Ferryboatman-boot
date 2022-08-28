@@ -6,6 +6,7 @@ import com.ferry.core.file.util.StringUtils;
 import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.server.blog.entity.BlBlog;
+import com.ferry.web.model.BaseRequest;
 import com.ferry.web.service.BlogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,11 +36,11 @@ public class BlogController {
 
     @ApiOperation(value = "id查询")
     @PostMapping("/getBlogById")
-    public Result blBlog(@RequestBody String id) {
-        if (StringUtils.isBlank(id)) {
+    public Result blBlog(@RequestBody BaseRequest request) {
+        if (StringUtils.isBlank(request.getId())) {
             throw new RuntimeException(CommonStatusEnum.ID_NOT_NULL);
         }
-        Result result = blogService.selectById(id);
+        Result result = blogService.selectById(request.getId());
         return result;
     }
 

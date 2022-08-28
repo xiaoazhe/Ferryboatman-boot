@@ -171,6 +171,9 @@
   <select id="getMaterialByCreantName" resultType="java.lang.Integer">
     SELECT count(*) FROM bl_material WHERE create_by = #{name}
   </select>
+  <select id="selectById" resultType="com.ferry.server.blog.entity.BlBlog">
+    select * from bl_blog where id = #{id}
+  </select>
   <insert id="batchInsert" keyColumn="oid" keyProperty="oid" parameterType="map" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into bl_blog
