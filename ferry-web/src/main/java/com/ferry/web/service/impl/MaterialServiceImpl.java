@@ -13,7 +13,6 @@ import com.ferry.core.page.PageResult;
 import com.ferry.server.blog.entity.BlMaterial;
 import com.ferry.server.blog.mapper.BlMaterialMapper;
 import com.ferry.web.service.MaterialService;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,7 @@ public class MaterialServiceImpl extends ServiceImpl <BlMaterialMapper, BlMateri
     private BlMaterialMapper materialMapper;
 
     @Override
-    public PageResult findPage(@NotNull PageRequest pageRequest) {
+    public PageResult findPage(PageRequest pageRequest) {
         Page <BlMaterial> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         String label = pageRequest.getName();
         QueryWrapper <BlMaterial> queryWrapper = new QueryWrapper <>();
