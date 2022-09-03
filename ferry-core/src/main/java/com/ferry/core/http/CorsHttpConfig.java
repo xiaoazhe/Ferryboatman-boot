@@ -1,4 +1,4 @@
-package com.ferry.web.config;
+package com.ferry.core.http;
 
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
  * @Date: 2021/4/26
  */
 @Component
-public class CorsConfig implements Filter {
+public class CorsHttpConfig implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

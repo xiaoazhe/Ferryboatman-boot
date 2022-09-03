@@ -78,6 +78,18 @@ spring:
           auth: true
           enable: true
           required: true
+  # 配置springtask 定时任务相关的配置
+  task:
+    scheduling:
+      pool:
+        size: 10
+      thread-name-prefix: hanhan
+    execution:
+      shutdown:
+        #线程关闭时是否等所有任务结束
+        await-termination: false
+        #线程最大的等待时间，防止线程陷入循环关不掉
+        await-termination-period: 10s
 # 开放健康检查接口
 management:
   endpoints:
@@ -118,3 +130,8 @@ ferry:
       userName: root
       password: hcz123456789
       database: ferry
+
+wechat:
+  officialAccount:
+    appid: 1234
+    appSecret: 1234

@@ -1,0 +1,7 @@
+{
+  "timestamp": "2022-08-23T03:24:18.954+0000",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Required request body is missing: public com.ferry.core.http.Result com.ferry.web.controller.BlogController.findPage(com.ferry.core.page.PageRequest)",
+  "path": "/blog/findPage"
+}
