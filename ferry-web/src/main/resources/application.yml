@@ -121,3 +121,7 @@ ferry:
       userName: root
       password: hcz123456789
       database: ferry
+jwt:
+  config:
+    key: ferry
+    ttl: 36000000

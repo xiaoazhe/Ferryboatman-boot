@@ -7,6 +7,7 @@ import com.ferry.core.file.emums.FieldStatusEnum;
 import com.ferry.core.file.util.DateTimeUtils;
 import com.ferry.core.file.util.IdWorker;
 import com.ferry.core.file.util.PoiUtils;
+import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.server.admin.entity.SysRole;
@@ -198,15 +199,25 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 	}
 
 	public BlUser login(String mobile, String password) {
-		BlUser user = userMapper.selectById(mobile);
-		if(user != null){
-			return user;
+		QueryWrapper queryWrapper = new QueryWrapper();
+		queryWrapper.eq(BlUser.COL_MOBILE, mobile);
+		queryWrapper.eq(BlUser.COL_PASSWORD, password);
+		List<BlUser> userList = userMapper.selectList(queryWrapper);
+		if(userList != null){
+			return userList.get(0);
 		}
 		return null;
 	}
 
 	@Override
-	public void add(BlUser user) {
+	public Result add(BlUser user) {
+		Result result = new Result();
+		QueryWrapper queryWrapper = new QueryWrapper();
+		queryWrapper.eq(BlUser.COL_MOBILE, user.getMobile());
+		List<BlUser> userList = userMapper.selectList(queryWrapper);
+		if (userList != null && userList.size() > 0) {
+			return result.ok("手机号已注册");
+		}
 		user.setId(idWorker.nextId() + "");
 		//密码加密
 		user.setPassword(user.getPassword());
@@ -217,6 +228,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		user.setUpdateTime(new Date());//更新日期
 		user.setLastdate(new Date());//最后登陆日期
 		userMapper.insert(user);
+		return result.ok("注册成功");
 	}
 
 }

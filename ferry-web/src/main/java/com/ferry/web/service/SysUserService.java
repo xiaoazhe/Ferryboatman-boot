@@ -1,6 +1,7 @@
 package com.ferry.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.server.admin.entity.SysUser;
@@ -43,5 +44,5 @@ public interface SysUserService extends IService <SysUser> {
 
 	public BlUser login(String mobile, String password);
 
-	public void add(BlUser user);
+	public Result add(BlUser user);
 }

@@ -46,6 +46,8 @@ public class UserController {
         Map <String, Object> map = new HashMap <>();
         map.put("token", token);
         map.put("roles", "user");
+        map.put("name", user.getNickname());
+        map.put("avatar", user.getAvatar());
         return new Result().ok(map);
     }
 
@@ -63,7 +65,6 @@ public class UserController {
 //        if(!checkcodeRedis.equals(code)){
 //            return new Result(false, StatusCode.ERROR, "请输入正确的验证码");
 //        }
-        userService.add(user);
-        return new Result().ok();
+        return userService.add(user);
     }
 }
