@@ -89,7 +89,7 @@ public class CommentServiceImpl extends ServiceImpl <BlCommentMapper, BlComment>
             Claims claims = jwtUtil.parseJWT(token);
             userId = claims.getId();
         } catch (Exception e) {
-            return null;
+            return new Result().ok(null);
         }
         Page <BlComment> comment = commentMapper.selectPage(page, new QueryWrapper <BlComment>().eq(BlComment.COL_USER_ID, userId)
         .ne(BlComment.COL_STATUS, 0));
