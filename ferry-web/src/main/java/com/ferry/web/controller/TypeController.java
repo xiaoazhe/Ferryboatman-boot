@@ -30,9 +30,8 @@ public class TypeController {
     }
 
     @ApiOperation(value = "根据类型查询博客")
-    @PostMapping(value = "/findBlogByTypeId")
-    public Result findBlogByTypeId(@RequestBody PageRequest pageRequest) {
-        String typeId = String.valueOf(pageRequest.getEnabled());
+    @PostMapping(value = "/findBlogByTypeId/{typeId}")
+    public Result findBlogByTypeId(@RequestBody PageRequest pageRequest, @PathVariable String typeId) {
         if (typeId == null || "-1" .equals(typeId)) {
             throw new RuntimeException(CommonStatusEnum.NO_FIND);
         }

@@ -211,7 +211,7 @@ public class ProblemServiceImpl extends ServiceImpl <BlProblemMapper, BlProblem>
         queryWrapper.eq(BlCollect.COL_USER_ID, userId);
         queryWrapper.eq(BlCollect.COL_STATUS, statusId);
         BlCollect collect = new BlCollect();
-        if (statusId == 1) {
+        if (statusId == 1 || statusId == 3) {
             collect.setBlogId(id);
             queryWrapper.eq(BlCollect.COL_BLOG_ID, id);
         } else {

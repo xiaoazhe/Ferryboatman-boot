@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ferry.core.file.emums.CommonStatusEnum;
+import com.ferry.core.file.emums.FieldStatusEnum;
 import com.ferry.core.file.emums.StateEnums;
 import com.ferry.core.file.util.IdWorker;
 import com.ferry.core.file.util.StringUtils;
@@ -19,9 +20,13 @@ import com.ferry.server.blog.mapper.BlCommentMapper;
 import com.ferry.server.blog.mapper.BlMusicMapper;
 import com.ferry.server.blog.mapper.BlTypeMapper;
 import com.ferry.web.service.BlogService;
+import com.ferry.web.service.ProblemService;
+import com.ferry.web.util.JwtUtil;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +55,15 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
 
     @Autowired
     private BlMusicMapper musicMapper;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private ProblemService problemService;
 
     @Override
     public PageResult findPage(PageRequest pageRequest) {
@@ -135,6 +149,17 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         BlBlog blog = blogMapper.selectById(id);
         if (blog == null) {
             throw new RuntimeException(StateEnums.REQUEST_ERROR.getMsg());
+        }
+        String userId = null;
+        try {
+            String token = request.getHeader(FieldStatusEnum.HEARD).substring(7);
+            Claims claims = jwtUtil.parseJWT(token);
+            userId = claims.getId();
+            if (userId != null) {
+                problemService.setCollect(id, 3);
+            }
+        } catch (Exception e) {
+
         }
         blog.setClickCount(blog.getClickCount() + 1);
         QueryWrapper<BlComment> queryWrapper = new QueryWrapper <>();
