@@ -95,15 +95,21 @@ public class ProblemServiceImpl extends ServiceImpl <BlProblemMapper, BlProblem>
 
     @Override
     public BlProblem getProById(String id) {
-        BlProblem problem = (BlProblem)redisTemplate.opsForValue().get("pro_" + id);
-        if (problem == null) {
-            problem = problemMapper.selectById(id);
-            problem.setVisits(problem.getVisits() + 1);
-            problemMapper.updateById(problem);
-            redisTemplate.opsForValue().set("pro_"+id, problem, 10, TimeUnit.SECONDS);
-        } else {
-            problem.setVisits(problem.getVisits() + 1);
-            problemMapper.updateById(problem);
+        BlProblem problem = new BlProblem();
+        try {
+            problem = (BlProblem)redisTemplate.opsForValue().get("pro_" + id);
+            if (problem == null) {
+                problem = problemMapper.selectById(id);
+                problem.setVisits(problem.getVisits() + 1);
+                problemMapper.updateById(problem);
+                redisTemplate.opsForValue().set("pro_"+id, problem, 10, TimeUnit.SECONDS);
+            } else {
+                problem.setVisits(problem.getVisits() + 1);
+                problemMapper.updateById(problem);
+            }
+            return problem;
+        } catch (Exception e) {
+            log.error("e:", e);
         }
         return problem;
     }
