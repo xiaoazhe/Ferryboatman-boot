@@ -203,7 +203,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		queryWrapper.eq(BlUser.COL_MOBILE, mobile);
 		queryWrapper.eq(BlUser.COL_PASSWORD, password);
 		List<BlUser> userList = userMapper.selectList(queryWrapper);
-		if(userList != null){
+		if(userList != null && !userList.isEmpty()){
 			return userList.get(0);
 		}
 		return null;

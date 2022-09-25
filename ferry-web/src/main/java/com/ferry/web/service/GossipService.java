@@ -26,7 +26,7 @@ public interface GossipService {
 
     public Page <Gossip> pageByUser(String userId, int page, int size);
 
-    public void addthumbup(String id);
+    public void addThumbsUp(String id);
 
     public List<Gossip> findAllByPre(String gossipId);
 }

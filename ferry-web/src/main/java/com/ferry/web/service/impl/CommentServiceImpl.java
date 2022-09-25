@@ -11,6 +11,7 @@ import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.server.blog.entity.BlComment;
 import com.ferry.server.blog.entity.BlReply;
+import com.ferry.server.blog.entity.BlUser;
 import com.ferry.server.blog.mapper.*;
 import com.ferry.web.service.CommentService;
 import com.ferry.web.util.JwtUtil;
@@ -67,7 +68,9 @@ public class CommentServiceImpl extends ServiceImpl <BlCommentMapper, BlComment>
         if (comment.getToCommentId() == null || "".equals(comment.getToCommentId())) {
             comment.setFirstCommentId("1");
         }
-        comment.setCreateBy(userMapper.selectById(userId).getNickname());
+        BlUser user = userMapper.selectById(userId);
+        String name = user.getNickname() == null ? "匿名用户" : user.getNickname();
+        comment.setCreateBy(name);
         comment.setCreateTime(new Date());
         comment.setUpdateTime(new Date());
         comment.setUserId(userId);

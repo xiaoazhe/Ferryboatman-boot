@@ -39,7 +39,12 @@ public class Result {
 		r.setData(data);
 		return r;
 	}
-	
+
+	public static Result okMsg(String data) {
+		Result r = new Result();
+		r.setData(String.valueOf(data));
+		return r;
+	}
 	public static Result ok() {
 		return new Result();
 	}

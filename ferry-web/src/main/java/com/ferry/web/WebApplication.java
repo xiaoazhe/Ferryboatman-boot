@@ -7,13 +7,16 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @Author: 摆渡人
  * @Date: 2021/4/27
  */
 @SpringBootApplication
-@MapperScan("com.ferry.server.*.mapper")
+@MapperScan({"com.ferry.core.*.mapper", "com.ferry.server.*.mapper"})
+@EnableMongoRepositories(value= "com.ferry.server.blog.db")
 public class WebApplication {
 
     public static void main(String[] args) {
@@ -30,6 +33,10 @@ public class WebApplication {
         return new JwtUtil();
     }
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 //    @Bean
 //    public BCryptPasswordEncoder encoder() {
 //        return new BCryptPasswordEncoder();

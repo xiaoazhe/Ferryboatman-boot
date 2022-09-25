@@ -213,7 +213,7 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
     @Override
     public List<BlMusic> getMusicList() {
         QueryWrapper<BlMusic> queryWrapper = new QueryWrapper();
-        queryWrapper.ne(BlMusic.COL_ENABLE, 1);
+        queryWrapper.eq(BlMusic.COL_ENABLE, 1);
         queryWrapper.ne(BlMusic.COL_DELETED, 1);
         return musicMapper.selectList(queryWrapper);
     }
