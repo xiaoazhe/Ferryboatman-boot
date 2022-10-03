@@ -1,5 +1,6 @@
 package com.ferry.server.navigate.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ferry.server.navigate.entity.NavInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ import java.util.List;
  * @author makejava
  * @since 2022-09-30 23:47:42
  */
-public interface NavInfoMapper {
+public interface NavInfoMapper extends BaseMapper<NavInfo> {
 
     /**
      * 通过ID查询单条数据

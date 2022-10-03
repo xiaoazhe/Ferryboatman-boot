@@ -1,5 +1,12 @@
 package com.ferry.server.navigate.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -9,103 +16,58 @@ import java.io.Serializable;
  * @author makejava
  * @since 2022-09-30 23:47:01
  */
+@Data
+@TableName(value = "nav_type")
 public class NavType implements Serializable {
     private static final long serialVersionUID = 463791060844485480L;
-    
+
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
     /**
      * 类型名称
      */
+    @TableId(value = "nav_type_name")
     private String navTypeName;
+
     /**
      * 父类型id
      */
+    @TableId(value = "nav_parent_type_id")
     private String navParentTypeId;
-    /**
-     * 创建人
-     */
-    private String createBy;
+
     /**
      * 创建时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @TableField(value = "create_time")
     private Date createTime;
-    /**
-     * 更新人
-     */
-    private String lastUpdateBy;
+
     /**
      * 更新时间
      */
-    private Date lastUpdateTime;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @TableField(value = "update_time")
+    private Date updateTime;
+
+    /**
+     * 创建人
+     */
+    @TableField(value = "create_by")
+    private String createBy;
+
+    /**
+     * 更新人
+     */
+    @TableField(value = "update_by")
+    private String updateBy;
+
     /**
      * 是否删除  1：已删除  0：正常
      */
-    private Long isDelete;
+    @TableField(value = "is_delete")
+    private Integer isDelete;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNavTypeName() {
-        return navTypeName;
-    }
-
-    public void setNavTypeName(String navTypeName) {
-        this.navTypeName = navTypeName;
-    }
-
-    public String getNavParentTypeId() {
-        return navParentTypeId;
-    }
-
-    public void setNavParentTypeId(String navParentTypeId) {
-        this.navParentTypeId = navParentTypeId;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getLastUpdateBy() {
-        return lastUpdateBy;
-    }
-
-    public void setLastUpdateBy(String lastUpdateBy) {
-        this.lastUpdateBy = lastUpdateBy;
-    }
-
-    public Date getLastUpdateTime() {
-        return lastUpdateTime;
-    }
-
-    public void setLastUpdateTime(Date lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-    }
-
-    public Long getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Long isDelete) {
-        this.isDelete = isDelete;
-    }
-
+    public static final String NAV_TYPE_NAME = "nav_type_name";
 }
 

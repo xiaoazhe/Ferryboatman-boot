@@ -1,14 +1,21 @@
 package com.ferry.navigate.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ferry.core.file.emums.StateEnums;
+import com.ferry.core.file.util.StringUtils;
+import com.ferry.core.page.PageResult;
+import com.ferry.navigate.request.QueryPageRequest;
 import com.ferry.server.navigate.entity.NavInfo;
+import com.ferry.server.navigate.entity.NavType;
 import com.ferry.server.navigate.mapper.NavInfoMapper;
 import com.ferry.navigate.service.NavInfoService;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * (NavInfo)表服务实现类
@@ -29,20 +36,28 @@ public class NavInfoServiceImpl implements NavInfoService {
      */
     @Override
     public NavInfo queryById(Integer id) {
+        if (Objects.isNull(id)) {
+            throw new RuntimeException(StateEnums.PARAMETER_ERROR.getMsg());
+        }
         return this.navInfoMapper.queryById(id);
     }
 
     /**
      * 分页查询
      *
-     * @param navInfo 筛选条件
      * @param pageRequest      分页对象
      * @return 查询结果
      */
     @Override
-    public Page<NavInfo> queryByPage(NavInfo navInfo, PageRequest pageRequest) {
-        long total = this.navInfoMapper.count(navInfo);
-        return new PageImpl<>(this.navInfoMapper.queryAllByLimit(navInfo, pageRequest), pageRequest, total);
+    public PageResult queryByPage(QueryPageRequest pageRequest) {
+        Page<NavInfo> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
+
+        QueryWrapper<NavInfo> queryWrapper = new QueryWrapper<NavInfo>();
+        queryWrapper.like(!StringUtils.isBlank(pageRequest.getFilterName()), NavInfo.NAV_NAME, pageRequest.getFilterName());
+        Page<NavInfo> userIPage = navInfoMapper.selectPage(page, queryWrapper);
+        PageResult pageResult = new PageResult(userIPage);
+
+        return pageResult;
     }
 
     /**
@@ -65,6 +80,9 @@ public class NavInfoServiceImpl implements NavInfoService {
      */
     @Override
     public NavInfo update(NavInfo navInfo) {
+        if (Objects.isNull(navInfo.getId())) {
+            throw new RuntimeException(StateEnums.PARAMETER_ERROR.getMsg());
+        }
         this.navInfoMapper.update(navInfo);
         return this.queryById(navInfo.getId());
     }
@@ -77,6 +95,9 @@ public class NavInfoServiceImpl implements NavInfoService {
      */
     @Override
     public boolean deleteById(Integer id) {
+        if (Objects.isNull(id)) {
+            throw new RuntimeException(StateEnums.PARAMETER_ERROR.getMsg());
+        }
         return this.navInfoMapper.deleteById(id) > 0;
     }
 }

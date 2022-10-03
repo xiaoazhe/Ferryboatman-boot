@@ -1,5 +1,6 @@
 package com.ferry.server.navigate.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ferry.server.navigate.entity.NavType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ import java.util.List;
  * @author makejava
  * @since 2022-09-30 23:47:00
  */
-public interface NavTypeMapper {
+public interface NavTypeMapper extends BaseMapper<NavType> {
 
     /**
      * 通过ID查询单条数据
@@ -44,7 +45,7 @@ public interface NavTypeMapper {
      * @param navType 实例对象
      * @return 影响行数
      */
-    int insert(NavType navType);
+//    int insert(NavType navType);
 
     /**
      * 批量新增数据（MyBatis原生foreach方法）

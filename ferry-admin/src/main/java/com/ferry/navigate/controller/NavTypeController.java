@@ -1,11 +1,11 @@
 package com.ferry.navigate.controller;
 
+import com.ferry.core.http.Result;
+import com.ferry.navigate.request.QueryPageRequest;
 import com.ferry.server.navigate.entity.NavType;
 import com.ferry.navigate.service.NavTypeService;
 import io.swagger.annotations.Api;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,13 +29,13 @@ public class NavTypeController {
     /**
      * 分页查询
      *
-     * @param navType 筛选条件
      * @param pageRequest      分页对象
      * @return 查询结果
      */
-    @GetMapping
-    public ResponseEntity<Page<NavType>> queryByPage(NavType navType, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.navTypeService.queryByPage(navType, pageRequest));
+    @ApiOperation(value = "分页查询")
+    @PostMapping(value="/findPage")
+    public Result queryByPage(@RequestBody QueryPageRequest pageRequest) {
+        return Result.ok(this.navTypeService.queryByPage(pageRequest));
     }
 
     /**
@@ -44,9 +44,10 @@ public class NavTypeController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("{id}")
-    public ResponseEntity<NavType> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.navTypeService.queryById(id));
+    @ApiOperation(value = "根据id获取导航分类")
+    @GetMapping(value = "/get/{id}")
+    public Result queryById(@PathVariable("id") Integer id) {
+        return Result.ok(this.navTypeService.queryById(id));
     }
 
     /**
@@ -55,9 +56,10 @@ public class NavTypeController {
      * @param navType 实体
      * @return 新增结果
      */
-    @PostMapping
-    public ResponseEntity<NavType> add(NavType navType) {
-        return ResponseEntity.ok(this.navTypeService.insert(navType));
+    @ApiOperation(value = "添加导航分类")
+    @PostMapping(value = "/save")
+    public Result add(@RequestBody NavType navType) {
+        return Result.okMsg(this.navTypeService.insert(navType));
     }
 
     /**
@@ -66,9 +68,10 @@ public class NavTypeController {
      * @param navType 实体
      * @return 编辑结果
      */
-    @PutMapping
-    public ResponseEntity<NavType> edit(NavType navType) {
-        return ResponseEntity.ok(this.navTypeService.update(navType));
+    @ApiOperation(value = "编辑导航分类")
+    @PutMapping(value = "/update/{id}")
+    public Result edit(@RequestBody NavType navType) {
+        return Result.ok(this.navTypeService.update(navType));
     }
 
     /**
@@ -77,9 +80,10 @@ public class NavTypeController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id) {
-        return ResponseEntity.ok(this.navTypeService.deleteById(id));
+    @ApiOperation(value = "删除导航分类")
+    @DeleteMapping(value = "/delete/{id}")
+    public Result deleteById(@PathVariable Integer id) {
+        return Result.ok(this.navTypeService.deleteById(id));
     }
 
 }

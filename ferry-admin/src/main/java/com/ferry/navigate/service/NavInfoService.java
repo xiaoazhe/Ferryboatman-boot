@@ -1,5 +1,7 @@
 package com.ferry.navigate.service;
 
+import com.ferry.core.page.PageResult;
+import com.ferry.navigate.request.QueryPageRequest;
 import com.ferry.server.navigate.entity.NavInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +29,7 @@ public interface NavInfoService {
      * @param pageRequest      分页对象
      * @return 查询结果
      */
-    Page<NavInfo> queryByPage(NavInfo navInfo, PageRequest pageRequest);
+    PageResult queryByPage(QueryPageRequest pageRequest);
 
     /**
      * 新增数据

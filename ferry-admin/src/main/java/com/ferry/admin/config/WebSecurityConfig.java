@@ -60,6 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/captcha.jpg**").permitAll()
             .antMatchers("/qr**/**").permitAll()
             .antMatchers("/qr**").permitAll()
+            .antMatchers("/navType/**").permitAll()
+            .antMatchers("/navInfo/**").permitAll()
             .antMatchers("/faceLogin/**").permitAll()
             .antMatchers("/check**/**").permitAll()
             .antMatchers("/websocket/**").permitAll()

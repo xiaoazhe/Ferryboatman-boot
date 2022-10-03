@@ -1,11 +1,11 @@
 package com.ferry.navigate.controller;
 
+import com.ferry.core.http.Result;
+import com.ferry.navigate.request.QueryPageRequest;
 import com.ferry.server.navigate.entity.NavInfo;
 import com.ferry.navigate.service.NavInfoService;
 import io.swagger.annotations.Api;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,13 +29,13 @@ public class NavInfoController {
     /**
      * 分页查询
      *
-     * @param navInfo 筛选条件
      * @param pageRequest      分页对象
      * @return 查询结果
      */
-    @GetMapping
-    public ResponseEntity<Page<NavInfo>> queryByPage(NavInfo navInfo, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.navInfoService.queryByPage(navInfo, pageRequest));
+    @ApiOperation(value = "分页查询")
+    @PostMapping(value="/findPage")
+    public Result queryByPage(@RequestBody QueryPageRequest pageRequest) {
+        return Result.ok(this.navInfoService.queryByPage(pageRequest));
     }
 
     /**
@@ -44,9 +44,10 @@ public class NavInfoController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("{id}")
-    public ResponseEntity<NavInfo> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.navInfoService.queryById(id));
+    @ApiOperation(value = "根据id获取导航")
+    @GetMapping(value = "/get/{id}")
+    public Result queryById(@PathVariable("id") Integer id) {
+        return Result.ok(this.navInfoService.queryById(id));
     }
 
     /**
@@ -55,9 +56,10 @@ public class NavInfoController {
      * @param navInfo 实体
      * @return 新增结果
      */
-    @PostMapping
-    public ResponseEntity<NavInfo> add(NavInfo navInfo) {
-        return ResponseEntity.ok(this.navInfoService.insert(navInfo));
+    @ApiOperation(value = "添加导航")
+    @PostMapping(value = "/save")
+    public Result add(@RequestBody NavInfo navInfo) {
+        return Result.ok(this.navInfoService.insert(navInfo));
     }
 
     /**
@@ -66,9 +68,10 @@ public class NavInfoController {
      * @param navInfo 实体
      * @return 编辑结果
      */
-    @PutMapping
-    public ResponseEntity<NavInfo> edit(NavInfo navInfo) {
-        return ResponseEntity.ok(this.navInfoService.update(navInfo));
+    @ApiOperation(value = "编辑导航")
+    @PutMapping(value = "/update/{id}")
+    public Result edit(@RequestBody NavInfo navInfo) {
+        return Result.ok(this.navInfoService.update(navInfo));
     }
 
     /**
@@ -77,9 +80,10 @@ public class NavInfoController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id) {
-        return ResponseEntity.ok(this.navInfoService.deleteById(id));
+    @ApiOperation(value = "编辑导航")
+    @PutMapping(value = "/delete/{id}")
+    public Result deleteById(@PathVariable("id")  Integer id) {
+        return Result.ok(this.navInfoService.deleteById(id));
     }
 
 }

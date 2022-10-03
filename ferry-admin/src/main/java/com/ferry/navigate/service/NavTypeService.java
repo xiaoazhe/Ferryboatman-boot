@@ -1,8 +1,10 @@
 package com.ferry.navigate.service;
 
+import com.ferry.core.page.PageRequest;
+import com.ferry.core.page.PageResult;
+import com.ferry.navigate.request.QueryPageRequest;
 import com.ferry.server.navigate.entity.NavType;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 /**
  * (NavType)表服务接口
@@ -23,11 +25,10 @@ public interface NavTypeService {
     /**
      * 分页查询
      *
-     * @param navType 筛选条件
      * @param pageRequest      分页对象
      * @return 查询结果
      */
-    Page<NavType> queryByPage(NavType navType, PageRequest pageRequest);
+    PageResult queryByPage(QueryPageRequest pageRequest);
 
     /**
      * 新增数据
@@ -35,7 +36,7 @@ public interface NavTypeService {
      * @param navType 实例对象
      * @return 实例对象
      */
-    NavType insert(NavType navType);
+    String insert(NavType navType);
 
     /**
      * 修改数据
