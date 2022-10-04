@@ -71,5 +71,7 @@ public class NavType implements Serializable {
     public static final String NAV_TYPE_NAME = "nav_type_name";
 
     public static final String NAV_PARENT_TYPE_ID = "nav_parent_type_id";
+
+    public static final String IS_DELETED = "is_delete";
 }
 

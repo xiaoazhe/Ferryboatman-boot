@@ -56,4 +56,5 @@ public interface NavTypeService {
      */
     boolean deleteByIds(List<Integer> ids);
 
+    List<NavType> queryList();
 }

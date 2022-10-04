@@ -6,6 +6,8 @@ import com.ferry.server.navigate.entity.NavInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 /**
  * (NavInfo)表服务接口
  *
@@ -49,9 +51,9 @@ public interface NavInfoService {
     /**
      * 通过主键删除数据
      *
-     * @param id 主键
+     * @param ids 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer id);
+    boolean deleteById(List<Integer> ids);
 
 }

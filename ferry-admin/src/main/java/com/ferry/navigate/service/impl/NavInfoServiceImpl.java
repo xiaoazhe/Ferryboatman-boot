@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -95,10 +96,10 @@ public class NavInfoServiceImpl implements NavInfoService {
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer id) {
-        if (Objects.isNull(id)) {
+    public boolean deleteById(List<Integer> ids) {
+        if (Objects.isNull(ids)) {
             throw new RuntimeException(StateEnums.PARAMETER_ERROR.getMsg());
         }
-        return this.navInfoMapper.deleteById(id) > 0;
+        return this.navInfoMapper.deleteBatchIds(ids) > 0;
     }
 }

@@ -149,4 +149,11 @@ public class NavTypeServiceImpl implements NavTypeService {
         }
         return this.navTypeMapper.deleteBatchIds(ids) > 0;
     }
+
+    @Override
+    public List<NavType> queryList() {
+        QueryWrapper<NavType> query = new QueryWrapper<NavType>();
+        query.isNull(NavType.IS_DELETED);
+        return navTypeMapper.selectList(query);
+    }
 }

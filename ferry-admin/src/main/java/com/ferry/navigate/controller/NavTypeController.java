@@ -87,5 +87,15 @@ public class NavTypeController {
         return Result.ok(this.navTypeService.deleteByIds(navTypeList.stream().map(NavType::getId).collect(Collectors.toList())));
     }
 
+    /**
+     * 分页查询
+     *
+     * @return 查询结果
+     */
+    @ApiOperation(value = "查询列表")
+    @GetMapping(value="/queryList")
+    public Result queryList() {
+        return Result.ok(this.navTypeService.queryList());
+    }
 }
 
