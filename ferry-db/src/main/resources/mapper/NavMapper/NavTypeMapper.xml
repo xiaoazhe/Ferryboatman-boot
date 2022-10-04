@@ -5,7 +5,7 @@
     <resultMap type="com.ferry.server.navigate.entity.NavType" id="NavTypeMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="navTypeName" column="nav_type_name" jdbcType="VARCHAR"/>
-        <result property="navParentTypeId" column="nav_parent_type_id" jdbcType="VARCHAR"/>
+        <result property="navParentTypeId" column="nav_parent_type_id" jdbcType="INTEGER"/>
         <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>

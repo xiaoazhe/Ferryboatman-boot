@@ -53,6 +53,7 @@ public class NavInfoServiceImpl implements NavInfoService {
         Page<NavInfo> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
 
         QueryWrapper<NavInfo> queryWrapper = new QueryWrapper<NavInfo>();
+        queryWrapper.eq(Objects.nonNull(pageRequest.getFilterId()), NavInfo.NAV_TYPE_ID, pageRequest.getFilterId());
         queryWrapper.like(!StringUtils.isBlank(pageRequest.getFilterName()), NavInfo.NAV_NAME, pageRequest.getFilterName());
         Page<NavInfo> userIPage = navInfoMapper.selectPage(page, queryWrapper);
         PageResult pageResult = new PageResult(userIPage);

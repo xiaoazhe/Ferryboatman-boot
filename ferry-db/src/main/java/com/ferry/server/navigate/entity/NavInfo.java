@@ -99,5 +99,7 @@ public class NavInfo implements Serializable {
 
     public static final String NAV_NAME = "nav_name";
 
+    public static final String NAV_TYPE_ID = "nav_type_id";
+
 }
 

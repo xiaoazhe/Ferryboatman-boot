@@ -7,14 +7,20 @@ import com.ferry.core.file.util.StringUtils;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.navigate.request.QueryPageRequest;
+import com.ferry.navigate.response.NavAggregatesResponse;
+import com.ferry.navigate.response.NavTypeResponse;
 import com.ferry.server.admin.entity.SysNotify;
+import com.ferry.server.navigate.entity.NavInfo;
 import com.ferry.server.navigate.entity.NavType;
+import com.ferry.server.navigate.mapper.NavInfoMapper;
 import com.ferry.server.navigate.mapper.NavTypeMapper;
 import com.ferry.navigate.service.NavTypeService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageImpl;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -27,6 +33,9 @@ import java.util.Objects;
 public class NavTypeServiceImpl implements NavTypeService {
     @Resource
     private NavTypeMapper navTypeMapper;
+
+    @Resource
+    private NavInfoMapper navInfoMapper;
 
     /**
      * 通过ID查询单条数据
@@ -54,10 +63,47 @@ public class NavTypeServiceImpl implements NavTypeService {
 
         QueryWrapper<NavType> queryWrapper = new QueryWrapper<NavType>();
         queryWrapper.like(!StringUtils.isBlank(pageRequest.getFilterName()), NavType.NAV_TYPE_NAME, pageRequest.getFilterName());
-        Page<NavType> userIPage = navTypeMapper.selectPage(page, queryWrapper);
-        PageResult pageResult = new PageResult(userIPage);
-
+        queryWrapper.isNull(NavType.NAV_PARENT_TYPE_ID);
+        Page<NavType> navTypePage = navTypeMapper.selectPage(page, queryWrapper);
+        List<NavAggregatesResponse> aggregatesResponseList = new ArrayList<>();
+        for (NavType navType : navTypePage.getRecords()) {
+            NavAggregatesResponse aggregatesResponse = buildNavResponse(navType);
+            aggregatesResponseList.add(aggregatesResponse);
+        }
+        Page<NavAggregatesResponse> response = new Page<>();
+        response.setTotal(navTypePage.getTotal());
+        response.setRecords(aggregatesResponseList);
+        response.setSize(navTypePage.getSize());
+        response.setPages(navTypePage.getPages());
+        response.setCurrent(navTypePage.getCurrent());
+        PageResult pageResult = new PageResult(response);
         return pageResult;
+    }
+
+
+    private NavAggregatesResponse buildNavResponse(NavType navType) {
+        NavAggregatesResponse navAggregatesResponse = new NavAggregatesResponse();
+        navAggregatesResponse.setId(navType.getId());
+        navAggregatesResponse.setNavTypeName(navType.getNavTypeName());
+        navAggregatesResponse.setCreateTime(navType.getCreateTime());
+        QueryWrapper<NavType> query = new QueryWrapper<NavType>();
+        query.eq(NavType.NAV_PARENT_TYPE_ID, navType.getId());
+        List<NavType> navTypeList = navTypeMapper.selectList(query);
+
+        if (!navTypeList.isEmpty()) {
+            List<NavTypeResponse> typeResponses = new ArrayList<>();
+            navTypeList.stream().forEach(n -> {
+                NavTypeResponse response = new NavTypeResponse();
+                response.setNavTypeName(n.getNavTypeName());
+                response.setId(n.getId());
+                response.setNavParentTypeId(n.getNavParentTypeId());
+                response.setCreateTime(n.getCreateTime());
+                response.setChildren(new ArrayList<>());
+                typeResponses.add(response);
+            });
+            navAggregatesResponse.setChildren(typeResponses);
+        }
+        return navAggregatesResponse;
     }
 
     /**
@@ -93,14 +139,14 @@ public class NavTypeServiceImpl implements NavTypeService {
     /**
      * 通过主键删除数据
      *
-     * @param id 主键
+     * @param ids 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer id) {
-        if (Objects.isNull(id)) {
+    public boolean deleteByIds(List<Integer> ids) {
+        if (ids.isEmpty()) {
             throw new RuntimeException(StateEnums.PARAMETER_ERROR.getMsg());
         }
-        return this.navTypeMapper.deleteById(id) > 0;
+        return this.navTypeMapper.deleteBatchIds(ids) > 0;
     }
 }

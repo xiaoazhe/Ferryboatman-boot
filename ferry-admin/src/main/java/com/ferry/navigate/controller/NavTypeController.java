@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * (NavType)表控制层
@@ -69,7 +71,7 @@ public class NavTypeController {
      * @return 编辑结果
      */
     @ApiOperation(value = "编辑导航分类")
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/update")
     public Result edit(@RequestBody NavType navType) {
         return Result.ok(this.navTypeService.update(navType));
     }
@@ -77,13 +79,12 @@ public class NavTypeController {
     /**
      * 删除数据
      *
-     * @param id 主键
      * @return 删除是否成功
      */
     @ApiOperation(value = "删除导航分类")
-    @DeleteMapping(value = "/delete/{id}")
-    public Result deleteById(@PathVariable Integer id) {
-        return Result.ok(this.navTypeService.deleteById(id));
+    @PostMapping(value = "/delete")
+    public Result deleteById(@RequestBody List<NavType> navTypeList) {
+        return Result.ok(this.navTypeService.deleteByIds(navTypeList.stream().map(NavType::getId).collect(Collectors.toList())));
     }
 
 }

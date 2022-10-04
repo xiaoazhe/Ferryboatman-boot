@@ -34,7 +34,7 @@ public class NavType implements Serializable {
      * 父类型id
      */
     @TableId(value = "nav_parent_type_id")
-    private String navParentTypeId;
+    private Integer navParentTypeId;
 
     /**
      * 创建时间
@@ -69,5 +69,7 @@ public class NavType implements Serializable {
     private Integer isDelete;
 
     public static final String NAV_TYPE_NAME = "nav_type_name";
+
+    public static final String NAV_PARENT_TYPE_ID = "nav_parent_type_id";
 }
 
