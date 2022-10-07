@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 public class NavAggregatesResponse {
-    private Integer id;
+    private String id;
 
     /**
      * 类型名称

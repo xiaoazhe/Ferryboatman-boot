@@ -57,7 +57,7 @@ public class NavServiceImpl extends ServiceImpl <NavTypeMapper, NavType> impleme
             }
             NavAggregatesResponse aggregatesResponse = new NavAggregatesResponse();
             aggregatesResponse.setNavTypeName(item.getNavTypeName());
-            aggregatesResponse.setId(item.getId());
+            aggregatesResponse.setId(String.valueOf(item.getId()));
             aggregatesResponse.setCreateTime(item.getCreateTime());
             if (Objects.nonNull(navInfos) && !navInfos.isEmpty()) {
                 List<NavInfoResponse> navInfoResponses = navInfoListCover(navInfos);
@@ -72,7 +72,7 @@ public class NavServiceImpl extends ServiceImpl <NavTypeMapper, NavType> impleme
                 .collect(Collectors.groupingBy(NavType::getNavParentTypeId));
 
         responses.stream().forEach(type -> {
-            List<NavType> navTypes = childrenNavTypeMap.get(type.getId());
+            List<NavType> navTypes = childrenNavTypeMap.get(Integer.valueOf(type.getId()));
             if (Objects.isNull(navTypes) ||navTypes.isEmpty()) {
                 return;
             }
@@ -102,7 +102,7 @@ public class NavServiceImpl extends ServiceImpl <NavTypeMapper, NavType> impleme
 
     private NavAggregatesResponse navCover(NavType navType) {
         NavAggregatesResponse navAggregatesResponse = new NavAggregatesResponse();
-        navAggregatesResponse.setId(navType.getId());
+        navAggregatesResponse.setId(String.valueOf(navType.getId()));
         navAggregatesResponse.setNavTypeName(navType.getNavTypeName());
         return navAggregatesResponse;
     }
