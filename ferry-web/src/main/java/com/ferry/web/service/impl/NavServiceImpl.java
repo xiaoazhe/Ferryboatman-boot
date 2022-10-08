@@ -2,6 +2,7 @@ package com.ferry.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ferry.core.file.emums.StateEnums;
 import com.ferry.server.navigate.entity.NavInfo;
 import com.ferry.server.navigate.entity.NavType;
 import com.ferry.server.navigate.mapper.NavInfoMapper;
@@ -98,6 +99,21 @@ public class NavServiceImpl extends ServiceImpl <NavTypeMapper, NavType> impleme
         });
 
         return responses;
+    }
+
+    @Override
+    public String insert(NavInfo navInfo) {
+        if (Objects.isNull(navInfo.getNavTypeId())) {
+            navInfo.setNavTypeId(1);
+        }
+        QueryWrapper<NavInfo> queryWrapper = new QueryWrapper<NavInfo>();
+        queryWrapper.eq(NavInfo.NAV_TAG, navInfo.getNavTag());
+        List<NavInfo> navTypeList = navInfoMapper.selectList(queryWrapper);
+        if (navTypeList.size() > 100) {
+            throw new RuntimeException("已超过限制");
+        }
+        navInfoMapper.insert(navInfo);
+        return StateEnums.REQUEST_SUCCESS.getMsg();
     }
 
     private NavAggregatesResponse navCover(NavType navType) {

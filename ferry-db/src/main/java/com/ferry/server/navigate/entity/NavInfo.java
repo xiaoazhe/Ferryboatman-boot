@@ -101,5 +101,8 @@ public class NavInfo implements Serializable {
 
     public static final String NAV_TYPE_ID = "nav_type_id";
 
+    public static final String NAV_TAG = "nav_tag";
+
+
 }
 
