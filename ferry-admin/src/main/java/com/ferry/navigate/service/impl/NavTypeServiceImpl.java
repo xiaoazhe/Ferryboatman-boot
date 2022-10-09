@@ -154,6 +154,7 @@ public class NavTypeServiceImpl implements NavTypeService {
     public List<NavType> queryList() {
         QueryWrapper<NavType> query = new QueryWrapper<NavType>();
         query.isNull(NavType.IS_DELETED);
+        query.orderByDesc(NavType.SORT);
         return navTypeMapper.selectList(query);
     }
 }

@@ -37,6 +37,18 @@ public class NavType implements Serializable {
     private Integer navParentTypeId;
 
     /**
+     * 排序字段
+     */
+    @TableField(value = "sort")
+    private Integer sort;
+
+    /**
+     * icon图标
+     */
+    @TableField(value = "icon")
+    private String icon;
+
+    /**
      * 创建时间
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -73,5 +85,7 @@ public class NavType implements Serializable {
     public static final String NAV_PARENT_TYPE_ID = "nav_parent_type_id";
 
     public static final String IS_DELETED = "is_delete";
+
+    public static final String SORT = "sort";
 }
 
