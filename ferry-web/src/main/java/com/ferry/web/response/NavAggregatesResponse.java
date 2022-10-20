@@ -21,6 +21,8 @@ public class NavAggregatesResponse {
 
     private String icon;
 
+    private String sort;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 

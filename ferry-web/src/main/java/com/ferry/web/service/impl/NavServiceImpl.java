@@ -38,7 +38,7 @@ public class NavServiceImpl extends ServiceImpl <NavTypeMapper, NavType> impleme
     @Override
     public List<NavAggregatesResponse> findAllNav() {
         QueryWrapper<NavType> queryWrapper = new QueryWrapper<NavType>();
-        queryWrapper.orderByDesc(NavType.SORT);
+        queryWrapper.orderByAsc(NavType.SORT);
         List<NavType> navTypeList = navTypeMapper.selectList(queryWrapper);
         List<Integer> typeIds = navTypeList.stream().map(NavType::getId).collect(Collectors.toList());
 
@@ -62,6 +62,7 @@ public class NavServiceImpl extends ServiceImpl <NavTypeMapper, NavType> impleme
             aggregatesResponse.setId(String.valueOf(item.getId()));
             aggregatesResponse.setCreateTime(item.getCreateTime());
             aggregatesResponse.setIcon(item.getIcon());
+            aggregatesResponse.setSort(String.valueOf(item.getSort()));
             if (Objects.nonNull(navInfos) && !navInfos.isEmpty()) {
                 List<NavInfoResponse> navInfoResponses = navInfoListCover(navInfos);
                 aggregatesResponse.setNavInfoList(navInfoResponses);
