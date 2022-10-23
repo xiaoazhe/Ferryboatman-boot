@@ -25,7 +25,7 @@ public class FriendLinkController {
     @ApiOperation(value = "申请")
     @PostMapping(value = "save")
     public Result save(@RequestBody BlFriendLink friendLink) {
-        return Result.ok(friendLinkService.add(friendLink));
+        return Result.okMsg(friendLinkService.add(friendLink));
     }
 
     @ApiOperation(value = "根据id查询")

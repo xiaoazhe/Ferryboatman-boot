@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ferry.blog.service.FriendService;
+import com.ferry.core.file.emums.FieldStatusEnum;
 import com.ferry.core.file.emums.StateEnums;
 import com.ferry.core.file.util.StringUtils;
 import com.ferry.core.page.PageRequest;
@@ -58,9 +59,11 @@ public class FriendServiceImpl extends ServiceImpl <BlFriendLinkMapper, BlFriend
     public PageResult getByPage(PageRequest pageRequest) {
         Page <BlFriendLink> page = new Page<>(pageRequest.getPageNum(),
                 pageRequest.getPageSize());
+        String name = pageRequest.getParamValue(FieldStatusEnum.NAME);
         QueryWrapper <BlFriendLink> queryWrapper = new QueryWrapper();
-        queryWrapper.like(!StringUtils.isBlank(pageRequest.getName()),
-                BlFriendLink.COL_TITLE, pageRequest.getName());
+        queryWrapper.like(!StringUtils.isBlank(name),
+                BlFriendLink.COL_TITLE, name);
+        queryWrapper.orderByDesc(BlFriendLink.COL_CREATE_TIME);
         Page<BlFriendLink> typePage = friendLinkMapper.selectPage(page, queryWrapper);
         PageResult pageResult = new PageResult(typePage);
         return pageResult;

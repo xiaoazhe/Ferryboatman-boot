@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +49,7 @@ public class FriendLinkServiceImpl extends ServiceImpl <BlFriendLinkMapper, BlFr
             String token = request.getHeader(FieldStatusEnum.HEARD).substring(7);
             Claims claims = jwtUtil.parseJWT(token);
             userId = claims.getId();
+
         } catch (Exception e) {
             return null;
         }
@@ -57,7 +59,7 @@ public class FriendLinkServiceImpl extends ServiceImpl <BlFriendLinkMapper, BlFr
         friendLink.setCreateBy(userId);
         friendLink.setClickCount(0);
         friendLink.setStatus((byte) 1);
-        friendLink.setUid(userId);
+        friendLink.setUserUid(userId);
         friendLinkMapper.insert(friendLink);
         return StateEnums.REQUEST_SUCCESS.getMsg();
     }
@@ -75,6 +77,7 @@ public class FriendLinkServiceImpl extends ServiceImpl <BlFriendLinkMapper, BlFr
         Page <BlFriendLink> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         QueryWrapper<BlFriendLink> queryWrapper = new QueryWrapper <>();
         queryWrapper.eq(BlFriendLink.COL_LINK_STATUS, 1);
+        queryWrapper.orderByDesc(BlFriendLink.COL_SORT);
         Page<BlFriendLink> problemPage = friendLinkMapper.selectPage(page, queryWrapper);
         PageResult pageResult = new PageResult(problemPage);
         return pageResult;
