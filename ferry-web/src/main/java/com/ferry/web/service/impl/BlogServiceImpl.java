@@ -74,6 +74,7 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         if (pageRequest.getEnabled()!= -1) {
             queryWrapper.eq(BlBlog.COL_TYPE_ID, pageRequest.getEnabled());
         }
+        queryWrapper.orderByDesc(BlBlog.COL_CREATE_TIME);
         Page<BlBlog> typePage = blogMapper.selectPage(page, queryWrapper);
         PageResult pageResult = new PageResult(typePage);
         return pageResult;
