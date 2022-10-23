@@ -49,7 +49,6 @@ public class MenuController {
     @ApiOperation(value = "获取菜单")
     @PreAuthorize("hasAuthority('sys:menu:view')")
     @PostMapping(value = "/findMenuTree")
-    @Deprecated
     public Result findMenuTree(@RequestBody SysMenu menu) {
         return Result.ok(sysMenuService.findTree(menu.getName(), 0));
     }
