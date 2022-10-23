@@ -20,7 +20,7 @@ import java.util.*;
 public class JwtTokenUtils implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * 用户名称
 	 */
@@ -36,11 +36,11 @@ public class JwtTokenUtils implements Serializable {
 	/**
      * 密钥
      */
-    private static final String SECRET = "abcdefgh";
+    private static final String SECRET = "ferryboat";
     /**
      * 有效期12小时
      */
-    private static final long EXPIRE_TIME = 12 * 60 * 60 * 1000;
+    private static final long EXPIRE_TIME = 48 * 60 * 60 * 1000;
 
     /**
 	 * 生成令牌
@@ -83,7 +83,7 @@ public class JwtTokenUtils implements Serializable {
 	    }
 	    return username;
 	}
-	
+
 	/**
 	 * 根据请求令牌获取登录认证信息
 	 * @param request 令牌
@@ -198,7 +198,7 @@ public class JwtTokenUtils implements Serializable {
         	token = request.getHeader("token");
         } else if(token.contains(tokenHead)){
         	token = token.substring(tokenHead.length());
-        } 
+        }
         if("".equals(token)) {
         	token = null;
         }
