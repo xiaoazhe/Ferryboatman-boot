@@ -108,6 +108,14 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         if (blBlog.getTypeId() == null && blBlog.getTypeName() == null) {
             blBlog.setTypeId("1");
         }
+        String userId = null;
+        try {
+            String token = request.getHeader(FieldStatusEnum.HEARD).substring(7);
+            Claims claims = jwtUtil.parseJWT(token);
+            userId = claims.getId();
+        } catch (Exception e) {
+
+        }
         if (isNumeric(blBlog.getTypeName())) {
             type = typeMapper.selectById(blBlog.getTypeName());
         } else {
@@ -117,10 +125,12 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
             BlBlog oldBlog = blogMapper.selectById(blBlog.getId());
             if (oldBlog != null) {
                 oldBlog.setUpdateTime(new Date());
+                oldBlog.setLastUpdateBy(userId);
                 oldBlog.setSort(blBlog.getSort());
                 oldBlog.setTitle(blBlog.getTitle());
                 oldBlog.setSummary(blBlog.getSummary());
                 oldBlog.setContent(blBlog.getContent());
+                blBlog.setUserUid(userId);
                 oldBlog.setTypeName(type.getName());
                 oldBlog.setFileUid(blBlog.getFileUid());
                 oldBlog.setTypeId(String.valueOf(type.getId()));
@@ -131,6 +141,8 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
             blBlog.setTypeId(String.valueOf(type.getId()));
             blBlog.setId(idWorker.nextId()+"");
             blBlog.setCreateTime(new Date());
+            blBlog.setCreateBy(userId);
+            blBlog.setUserUid(userId);
             blBlog.setArticlesPart(blBlog.getAuthor());
             int id = blogMapper.insert(blBlog);
         }

@@ -55,8 +55,8 @@ public class UserController {
      * 注册
      * @return
      */
-    @PostMapping(value = "/register/{code}")
-    public Result regist(@PathVariable String code, @RequestBody BlUser user){
+    @PostMapping(value = "/register")
+    public Result register(@RequestBody BlUser user){
         //得到缓存中的验证码
 //        String checkcodeRedis = (String) redisTemplate.opsForValue().get("checkcode_" + user.getMobile());
 //        if(checkcodeRedis.isEmpty()){

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Objects;
+
 /**
  * @Author: 摆渡人
  * @Date: 2021/5/8
@@ -51,6 +53,9 @@ public class FileController {
      */
     @PostMapping(value = "/images")
     public Result addFile(MultipartFile file) throws Exception {
+        if (Objects.isNull(file)) {
+            return Result.error("文件为空");
+        }
         return Result.okMsg(fileService.uploadFile(file));
     }
 
@@ -61,6 +66,9 @@ public class FileController {
      */
     @PostMapping(value = "/fdfsUploadImage")
     public Result fdfsUploadImage(MultipartFile file) {
+        if (Objects.isNull(file)) {
+            return Result.error("文件为空");
+        }
         String url = uploadService.uploadImage(file);
         Result result = new Result();
         result.setData(url);

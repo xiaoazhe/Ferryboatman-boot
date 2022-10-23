@@ -93,7 +93,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 	public SysUser findById(Long id) {
 		return sysUserMapper.selectById(id);
 	}
-	
+
 	@Override
 	public PageResult findPage(PageRequest pageRequest) {
 		Page<SysUser> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
@@ -108,7 +108,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		findUserRoles(pageResult);
 		return pageResult;
 	}
-	
+
 	/**
 	 * 加载用户角色
 	 * @param pageResult
@@ -145,13 +145,13 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		queryWrapper.eq(SysUserRole.COL_USER_ID, userId);
 		return sysUserRoleMapper.selectList(queryWrapper);
 	}
-	
+
 	@Override
 	public File createUserExcelFile(PageRequest pageRequest) {
 		PageResult pageResult = findPage(pageRequest);
 		return createUserExcelFile(pageResult.getContent());
 	}
-	
+
 	public static File createUserExcelFile(List<?> records) {
 		if (records == null) {
 			records = new ArrayList<>();
@@ -227,6 +227,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		user.setRegdate(new Date());//注册日期
 		user.setUpdateTime(new Date());//更新日期
 		user.setLastdate(new Date());//最后登陆日期
+		user.setAvatar("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.wmzhe.top%2Fuploadimg%2Fpc%2F26%2F26f3%2F26f344741948e2fb019089f99cc677fb.jpg&refer=http%3A%2F%2Fimg.wmzhe.top&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1669081591&t=f821adb2e0c892620ea510d32e5afab0");
 		userMapper.insert(user);
 		return result.ok("注册成功");
 	}
