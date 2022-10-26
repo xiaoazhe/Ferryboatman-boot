@@ -43,6 +43,7 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         String label = pageRequest.getName();
         QueryWrapper<BlBlog> queryWrapper = new QueryWrapper();
         queryWrapper.like(!StringUtils.isBlank(label),BlBlog.COL_TITLE, label);
+        queryWrapper.orderByDesc(BlBlog.COL_CREATE_TIME);
         Page<BlBlog> typePage = blogMapper.selectPage(page, queryWrapper);
         PageResult pageResult = new PageResult(typePage);
         return pageResult;
