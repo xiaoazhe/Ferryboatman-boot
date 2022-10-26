@@ -75,6 +75,7 @@ public class TypeServiceImpl extends ServiceImpl <BlTypeMapper, BlType> implemen
     public List <BlType> findAll() {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.ne(BlType.COL_ID, 0);
+        queryWrapper.orderByDesc(BlType.COL_SORT);
         List <BlType> typeList= blTypeMapper.selectList(queryWrapper);
         return typeList;
     }
