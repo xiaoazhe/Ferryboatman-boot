@@ -166,10 +166,12 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         String userId = null;
         try {
             String token = request.getHeader(FieldStatusEnum.HEARD).substring(7);
-            Claims claims = jwtUtil.parseJWT(token);
-            userId = claims.getId();
-            if (userId != null) {
-                problemService.setCollect(id, 3);
+            if (!StringUtils.isBlank(token) && !StringUtils.equals("undefined", token)) {
+                Claims claims = jwtUtil.parseJWT(token);
+                userId = claims.getId();
+                if (userId != null) {
+                    problemService.setCollect(id, 3);
+                }
             }
         } catch (Exception e) {
 
