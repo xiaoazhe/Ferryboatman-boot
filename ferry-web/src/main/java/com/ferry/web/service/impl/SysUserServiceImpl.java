@@ -19,6 +19,7 @@ import com.ferry.server.admin.mapper.SysUserRoleMapper;
 import com.ferry.server.blog.entity.BlUser;
 import com.ferry.server.blog.mapper.BlUserMapper;
 import com.ferry.web.service.SysUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -211,25 +212,26 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 
 	@Override
 	public Result add(BlUser user) {
-		Result result = new Result();
 		QueryWrapper queryWrapper = new QueryWrapper();
 		queryWrapper.eq(BlUser.COL_MOBILE, user.getMobile());
 		List<BlUser> userList = userMapper.selectList(queryWrapper);
 		if (userList != null && userList.size() > 0) {
-			return result.ok("手机号已注册");
+			return Result.ok("手机号已注册");
 		}
 		user.setId(idWorker.nextId() + "");
-		//密码加密
+		if (StringUtils.isEmpty(user.getPassword())) {
+			return Result.error("密码为空");
+		}
 		user.setPassword(user.getPassword());
-		user.setFollowcount(0);//关注数
-		user.setFanscount(0);//粉丝数
-		user.setOnline(0L);//在线时长
-		user.setRegdate(new Date());//注册日期
-		user.setUpdateTime(new Date());//更新日期
-		user.setLastdate(new Date());//最后登陆日期
+		user.setFollowcount(0);
+		user.setFanscount(0);
+		user.setOnline(0L);
+		user.setRegdate(new Date());
+		user.setUpdateTime(new Date());
+		user.setLastdate(new Date());
 		user.setAvatar("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.wmzhe.top%2Fuploadimg%2Fpc%2F26%2F26f3%2F26f344741948e2fb019089f99cc677fb.jpg&refer=http%3A%2F%2Fimg.wmzhe.top&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1669081591&t=f821adb2e0c892620ea510d32e5afab0");
 		userMapper.insert(user);
-		return result.ok("注册成功");
+		return Result.ok("注册成功");
 	}
 
 }

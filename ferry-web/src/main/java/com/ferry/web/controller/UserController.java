@@ -40,7 +40,7 @@ public class UserController {
     public Result login(@RequestBody BlUser user){
         user = userService.login(user.getMobile(), user.getPassword());
         if(user == null){
-            return new Result().error("请先注册！");
+            return Result.error("请先注册！");
         }
         String token = jwtUtil.createJWT(String.valueOf(user.getId()), user.getMobile(), "user");
         Map <String, Object> map = new HashMap <>();
@@ -48,7 +48,7 @@ public class UserController {
         map.put("roles", "user");
         map.put("name", user.getNickname());
         map.put("avatar", user.getAvatar());
-        return new Result().ok(map);
+        return Result.ok(map);
     }
 
     /**
