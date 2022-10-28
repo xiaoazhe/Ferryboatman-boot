@@ -38,10 +38,9 @@ public class MusicController {
     @Value("${spring.mail.username}")
     private String from;
 
-    @PostMapping(value="/mail1")
+    @PostMapping(value="/test_mail")
     public void testSendSimple() {
         try {
-            System.out.println("tt");
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(from);
             message.setTo("1540035958@qq.com");
