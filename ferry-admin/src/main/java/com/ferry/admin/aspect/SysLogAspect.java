@@ -21,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * 系统日志，切面处理类，记录日志
@@ -100,6 +101,9 @@ public class SysLogAspect {
 	@AfterReturning(returning = "ret", pointcut = "log()")// returning的值和doAfterReturning的参数名一致
 	public void doAfterReturning(Object ret) {
 		// 处理完请求，返回内容(返回值太复杂时，打印的是物理存储空间的地址)
+		if (Objects.isNull(ret)) {
+			return;
+		}
 		String r = new String(ret.toString());
 		if (r.length() > 200) {
 			logger.info("返回值 :{} ", r.substring(0, 200));

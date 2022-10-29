@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
-    
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 使用自定义身份验证组件
@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/qr**").permitAll()
             .antMatchers("/navType/**").permitAll()
             .antMatchers("/navInfo/**").permitAll()
+            .antMatchers("/reptile/**").permitAll()
             .antMatchers("/faceLogin/**").permitAll()
             .antMatchers("/check**/**").permitAll()
             .antMatchers("/websocket/**").permitAll()
@@ -84,5 +85,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManager() throws Exception {
     	return super.authenticationManager();
     }
-    
+
 }
