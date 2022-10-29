@@ -4,6 +4,7 @@ import com.ferry.blog.dto.ReptileRequest;
 import com.ferry.blog.service.ReptileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.zhyd.hunter.config.HunterConfig;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,7 +23,12 @@ public class ReptileController {
 
     @Resource
     private ReptileService reptileService;
-
+    @PostMapping("/bringBackList")
+    @ResponseBody
+    @ApiOperation(value = "抓取列表文章")
+    public void bringBackList(@RequestBody ReptileRequest request, HttpServletResponse response) throws IOException, InterruptedException {
+        reptileService.bringBackList(request, response.getWriter());
+    }
 
     @PostMapping("/single")
     @ApiOperation(value = "抓取单个文章")

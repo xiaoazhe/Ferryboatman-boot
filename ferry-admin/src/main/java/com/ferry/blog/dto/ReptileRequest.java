@@ -13,4 +13,10 @@ public class ReptileRequest {
     private String url;
 
     private boolean convertImg;
+
+    private String title;
+
+    private String userId;
+
+    private int count = 1;
 }
