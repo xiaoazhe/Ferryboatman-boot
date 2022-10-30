@@ -1,6 +1,7 @@
 package com.ferry.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.server.blog.entity.BlBlog;
@@ -22,4 +23,6 @@ public interface BlogService extends IService <BlBlog> {
     String deleteById(String id);
 
     BlBlog selectById(String id);
+
+    Result publishById(String id);
 }

@@ -7,6 +7,7 @@ import com.ferry.blog.service.BlogService;
 import com.ferry.core.file.emums.StateEnums;
 import com.ferry.core.file.util.IdWorker;
 import com.ferry.core.file.util.StringUtils;
+import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.server.blog.entity.BlBlog;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,6 +102,22 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
     @Override
     public BlBlog selectById(String id) {
         return blogMapper.selectById(id);
+    }
+
+    @Override
+    public Result publishById(String id) {
+
+        BlBlog blog = blogMapper.selectById(id);
+        if (Objects.isNull(blog)) {
+            throw new RuntimeException("id异常");
+        }
+        if (StringUtils.equals(blog.getIsPublish(), "1")) {
+            blog.setIsPublish("0");
+        } else {
+            blog.setIsPublish("1");
+        }
+        blogMapper.updateById(blog);
+        return Result.okMsg(StateEnums.REQUEST_SUCCESS.getMsg());
     }
 
     /**

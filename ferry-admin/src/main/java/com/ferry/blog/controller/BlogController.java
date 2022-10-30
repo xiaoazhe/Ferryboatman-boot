@@ -75,4 +75,17 @@ public class BlogController {
     public Result selectById(@PathVariable String id) {
         return Result.ok(blogService.selectById(id));
     }
+
+    /**
+     * 修改发布状态
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "修改发布状态")
+    @PreAuthorize("hasAuthority('sys:blog:view')")
+    @RequestMapping(value = "/publishById/{id}", method = RequestMethod.GET)
+    public Result publishById(@PathVariable String id) {
+        return Result.ok(blogService.publishById(id));
+    }
 }
