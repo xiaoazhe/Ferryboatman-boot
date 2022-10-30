@@ -2,8 +2,8 @@ package com.ferry.blog.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ferry.admin.config.HunterConfigTemplate;
 import com.ferry.admin.util.ImageDownloadUtil;
-import com.ferry.admin.util.SecurityUtils;
 import com.ferry.blog.dto.ReptileRequest;
 import com.ferry.blog.service.BlogService;
 import com.ferry.blog.service.ReptileService;
@@ -12,6 +12,7 @@ import com.ferry.server.blog.entity.BlBlog;
 import com.ferry.server.blog.entity.BlType;
 import com.ferry.server.blog.mapper.BlTypeMapper;
 import me.zhyd.hunter.config.HunterConfig;
+
 import me.zhyd.hunter.entity.ImageLink;
 import me.zhyd.hunter.entity.VirtualArticle;
 import me.zhyd.hunter.processor.BlogHunterProcessor;
@@ -87,27 +88,28 @@ public class ReptileServiceImpl implements ReptileService {
 
     private HunterConfig buildConfig(ReptileRequest request) {
 
-        String conf = CONFIG.replaceAll("\\{uid}", request.getUserId());
-        Map<String, HunterConfig> configMap = JSONObject.parseObject(conf, Map.class);
-
-        HunterConfig config = JSONObject.parseObject(String.valueOf(configMap.get(request.getTitle())), HunterConfig.class);
-        if (Objects.isNull(config)) {
-            return null;
-        }
-
-        Map<String, Map<String, String>> headerMap = JSONObject.parseObject(HEADERS.replaceAll("\\{uid}", request.getUserId()), Map.class);
-        Map<String, String> configHeader = JSONObject.parseObject(String.valueOf(headerMap.get(request.getTitle())), Map.class);
-
-        Map<String, String> headers = new HashMap<>();
-        configHeader.forEach((k,v)-> {
-            headers.put(k, v);
-        });
-
-        config.setHeaders(headers);
-
-        if (Objects.nonNull(config.getEntryUrls())) {
-            config.setEntryUrls(String.valueOf(config.getEntryUrls()));
-        }
+        HunterConfig config = HunterConfigTemplate.getHunterConfig(request.getTitle());
+//        String conf = platformConfig.replaceAll("\\{uid}", request.getUserId());
+////        Map<String, HunterConfig> configMap = JSONObject.parseObject(conf, Map.class);
+//
+//        HunterConfig config = JSONObject.parseObject(conf, HunterConfig.class);
+//        if (Objects.isNull(config)) {
+//            return null;
+//        }
+//
+//        Map<String, Map<String, String>> headerMap = JSONObject.parseObject(HEADERS.replaceAll("\\{uid}", request.getUserId()), Map.class);
+//        Map<String, String> configHeader = JSONObject.parseObject(String.valueOf(headerMap.get(request.getTitle())), Map.class);
+//
+//        Map<String, String> headers = new HashMap<>();
+//        configHeader.forEach((k,v)-> {
+//            headers.put(k, v);
+//        });
+//
+//        config.setHeaders(headers);
+//
+//        if (Objects.nonNull(config.getEntryUrls())) {
+//            config.setEntryUrls(String.valueOf(config.getEntryUrls()));
+//        }
         config.setUid(request.getUserId());
         config.setCount(request.getCount());
         return config;
@@ -171,11 +173,12 @@ public class ReptileServiceImpl implements ReptileService {
     }
 
     /**
-     * csdn cnblogs 可以
+     * csdn cnblogs oschina可以
      * imooc 无图片 有查看更多拦截
      * iteye 批量不行 单个能解析 貌似有问题
-     * juejin 批量502应该有拦截或修改 单个支持不了了
+     * juejin 批量 单个支持不了了
      * v2ex 打不开
+     * jianshu 滑块拦截
      */
     private final static String HEADERS = "{\n" +
             "    \"imooc\":{\n" +
@@ -196,11 +199,19 @@ public class ReptileServiceImpl implements ReptileService {
             "    },\n" +
             "    \"juejin\":{\n" +
             "        \"Host\":\"juejin.im\",\n" +
-            "        \"Referer\":\"https://juejin.im/user/{uid}/posts\"\n" +
+            "        \"Referer\":\"https://juejin.im\"\n" +
             "    },\n" +
             "    \"v2ex\":{\n" +
             "        \"Host\":\"www.v2ex.com\",\n" +
             "        \"Referer\":\"https://www.v2ex.com\"\n" +
+            "    }\n" +
+            "    \"v2ex\":{\n" +
+            "        \"Host\":\"my.oschina.net\",\n" +
+            "        \"Referer\":\"https://my.oschina.net\"\n" +
+            "    }\n" +
+            "    \"jianshu\":{\n" +
+            "        \"Host\":\"www.jianshu.com\",\n" +
+            "        \"Referer\":\"https://www.jianshu.com/p/{uid}\"\n" +
             "    }\n" +
             "}";
     private final static String CONFIG = "{\n" +
@@ -306,5 +317,46 @@ public class ReptileServiceImpl implements ReptileService {
             "      \"https://www.v2ex.com/member/{uid}\"\n" +
             "    ]\n" +
             "  }\n" +
-            "}";
+            "}," +
+            "\"oschina\": {\n" +
+            "    \"domain\": \"oschina.net\",\n" +
+            "    \"titleRegex\": \"//h1[@class=article-box__title]/a/text()\",\n" +
+            "    \"authorRegex\": \"//div[@class=article-box__meta]/div[@class=item-list]/div[2]/a/html()\",\n" +
+            "    \"releaseDateRegex\": \"//div[@class=article-box__meta]/div[@class=item-list]/div[4]/html()\",\n" +
+            "    \"contentRegex\": \"//div[@class=content]/html()\",\n" +
+            "    \"tagRegex\": \"//div[@class=tags-box]/div[@class=tags-box__inner]/a/html()\",\n" +
+            "    \"targetLinksRegex\": \"https://my.oschina.net/.*/blog/[0-9]{1,10}\",\n" +
+            "    \"header\": [\n" +
+            "      \"Host=my.oschina.net\",\n" +
+            "      \"Referer=https://my.oschina.net\"\n" +
+            "    ],\n" +
+            "    \"entryUrls\": [\n" +
+            "      \"https://my.oschina.net/{uid}\",\n" +
+            "      \"https://my.oschina.net/u/{uid}\"\n" +
+            "    ]\n" +
+            "  },\n" +
+            "  \"jianshu\": {\n" +
+            "    \"resolver\": {\n" +
+            "      \"releaseDate\": {\n" +
+            "        \"type\": \"regex\",\n" +
+            "        \"clazz\": \"java.lang.Long\",\n" +
+            "        \"operator\": \"* 1000\"\n" +
+            "      }\n" +
+            "    },\n" +
+            "    \"domain\": \"jianshu.com\",\n" +
+            "    \"titleRegex\": \"//h1[@class=_1RuRku]/text()\",\n" +
+            "    \"authorRegex\": \"//span[@class=_22gUMi]/html()\",\n" +
+            "    \"releaseDateRegex\": \".*\\\"first_shared_at\\\":([0-9]+),.*\",\n" +
+            "    \"contentRegex\": \"//article[@class=_2rhmJa]/html()\",\n" +
+            "    \"tagRegex\": \"//div\",\n" +
+            "    \"targetLinksRegex\": \"/p/[0-9a-zA-Z]{1,15}\",\n" +
+            "    \"header\": [\n" +
+            "      \"Host=www.jianshu.com\",\n" +
+            "      \"Referer=https://www.jianshu.com/p/{uid}\"\n" +
+            "    ],\n" +
+            "    \"entryUrls\": [\n" +
+            "      \"https://www.jianshu.com/p/{uid}\",\n" +
+            "      \"https://www.jianshu.com/u/{uid}\"\n" +
+            "    ]\n" +
+            "  }";
 }
