@@ -1,7 +1,5 @@
 package com.ferry.blog.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.ferry.admin.config.HunterConfigTemplate;
 import com.ferry.admin.util.ImageDownloadUtil;
 import com.ferry.blog.dto.ReptileRequest;
@@ -46,12 +44,12 @@ public class ReptileServiceImpl implements ReptileService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void crawlSingle(Long typeId, String url, boolean convertImg, PrintWriter writer) {
+    public void crawlSingle(ReptileRequest request, PrintWriter writer) {
         HunterPrintWriter writerUtil = new HunterPrintWriter(writer);
 
-        HunterProcessor hunter = new BlogHunterProcessor(url, convertImg, writerUtil);
+        HunterProcessor hunter = new BlogHunterProcessor(request.getUrl(), request.isConvertImg(), writerUtil);
         CopyOnWriteArrayList<VirtualArticle> list = hunter.execute();
-        this.saveReptileBlog(typeId, hunter.getConfig(), writerUtil, list);
+        this.saveReptileBlog(request.getTypeId(), hunter.getConfig(), writerUtil, list, request.getTitle());
 
         writerUtil.shutdown();
     }
@@ -69,7 +67,6 @@ public class ReptileServiceImpl implements ReptileService {
             throw new RuntimeException("该地址未解析");
         }
 
-
         HunterPrintWriter writerUtil = new HunterPrintWriter(writer);
         long start = System.currentTimeMillis();
         HunterProcessor hunter = new BlogHunterProcessor(config, writerUtil, UUID.randomUUID().toString());
@@ -79,7 +76,7 @@ public class ReptileServiceImpl implements ReptileService {
             return;
         }
         writerUtil.print("Congratulation ! 此次共整理到" + list.size() + "篇文章");
-        saveReptileBlog(request.getTypeId(), config, writerUtil, list);
+        saveReptileBlog(request.getTypeId(), config, writerUtil, list, request.getTitle());
 
         writerUtil.print(String.format("搬家完成！耗时 %s ms.", (System.currentTimeMillis() - start)));
         writerUtil.shutdown();
@@ -87,43 +84,21 @@ public class ReptileServiceImpl implements ReptileService {
 
 
     private HunterConfig buildConfig(ReptileRequest request) {
-
         HunterConfig config = HunterConfigTemplate.getHunterConfig(request.getTitle());
-//        String conf = platformConfig.replaceAll("\\{uid}", request.getUserId());
-////        Map<String, HunterConfig> configMap = JSONObject.parseObject(conf, Map.class);
-//
-//        HunterConfig config = JSONObject.parseObject(conf, HunterConfig.class);
-//        if (Objects.isNull(config)) {
-//            return null;
-//        }
-//
-//        Map<String, Map<String, String>> headerMap = JSONObject.parseObject(HEADERS.replaceAll("\\{uid}", request.getUserId()), Map.class);
-//        Map<String, String> configHeader = JSONObject.parseObject(String.valueOf(headerMap.get(request.getTitle())), Map.class);
-//
-//        Map<String, String> headers = new HashMap<>();
-//        configHeader.forEach((k,v)-> {
-//            headers.put(k, v);
-//        });
-//
-//        config.setHeaders(headers);
-//
-//        if (Objects.nonNull(config.getEntryUrls())) {
-//            config.setEntryUrls(String.valueOf(config.getEntryUrls()));
-//        }
         config.setUid(request.getUserId());
         config.setCount(request.getCount());
         return config;
     }
 
 
-    private void saveReptileBlog(Long typeId, HunterConfig config, HunterPrintWriter writerUtil, CopyOnWriteArrayList<VirtualArticle> list) {
+    private void saveReptileBlog(Long typeId, HunterConfig config, HunterPrintWriter writerUtil, CopyOnWriteArrayList<VirtualArticle> list, String title) {
 
         for (VirtualArticle spiderVirtualArticle : list) {
-            this.buildBlog(typeId, config.isConvertImg(), writerUtil, spiderVirtualArticle);
+            this.buildBlog(typeId, config.isConvertImg(), writerUtil, spiderVirtualArticle, title);
         }
     }
 
-    private void buildBlog(Long typeId, boolean isConvertImg, HunterPrintWriter writerUtil, VirtualArticle virtualArticle) {
+    private void buildBlog(Long typeId, boolean isConvertImg, HunterPrintWriter writerUtil, VirtualArticle virtualArticle, String title) {
         BlBlog blog = new BlBlog();
         blog.setTitle(virtualArticle.getTitle());
         blog.setContent(isConvertImg ? parseImgForHtml(virtualArticle, writerUtil) : virtualArticle.getContent());
@@ -137,6 +112,11 @@ public class ReptileServiceImpl implements ReptileService {
         blog.setCreateTime(new Date());
         blog.setAuthor(virtualArticle.getAuthor());
         blog.setSummary(virtualArticle.getDescription());
+        blog.setIsPublish("0");
+        blog.setArticlesPart(title);
+        if (Objects.isNull(blog.getFileUid())) {
+            blog.setFileUid(getImgMap().get(title));
+        }
         blogService.save(blog);
         writerUtil.print(String.format("[ save ] Succeed! <a href=\"%s\" target=\"_blank\">%s</a>", virtualArticle.getSource(), blog.getTitle()));
     }
@@ -170,6 +150,19 @@ public class ReptileServiceImpl implements ReptileService {
             }
         }
         return html;
+    }
+
+
+    private HashMap<String, String> getImgMap() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("csdn", "http://azhe.oss-cn-beijing.aliyuncs.com/FerryMan/20221030163750273.png");
+        hashMap.put("imooc", "https://www.imooc.com/static/img/index/logo2020.png");
+        hashMap.put("iteye", "http://azhe.oss-cn-beijing.aliyuncs.com/FerryMan/20221030165331622.png");
+        hashMap.put("cnblogs", "https://www.cnblogs.com/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM");
+        hashMap.put("juejin", "http://azhe.oss-cn-beijing.aliyuncs.com/FerryMan/20221030163750273.png");
+        hashMap.put("oschina", "http://azhe.oss-cn-beijing.aliyuncs.com/FerryMan/20221030163750273.png");
+//        hashMap.put("jianshu", "http://azhe.oss-cn-beijing.aliyuncs.com/FerryMan/20221030163750273.png");
+        return hashMap;
     }
 
     /**

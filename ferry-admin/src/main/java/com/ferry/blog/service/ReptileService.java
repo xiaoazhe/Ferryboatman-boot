@@ -10,7 +10,7 @@ import java.io.PrintWriter;
  */
 public interface ReptileService {
 
-    void crawlSingle(Long typeId, String url, boolean convertImg, PrintWriter writer);
+    void crawlSingle(ReptileRequest request, PrintWriter writer);
 
     void bringBackList(ReptileRequest request, PrintWriter writer);
 }

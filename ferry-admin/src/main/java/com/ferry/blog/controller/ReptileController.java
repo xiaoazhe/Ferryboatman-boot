@@ -43,7 +43,7 @@ public class ReptileController {
     @PostMapping("/single")
     @ApiOperation(value = "抓取单个文章")
     public void single(@RequestBody ReptileRequest request, HttpServletResponse response) throws IOException, InterruptedException {
-        reptileService.crawlSingle(request.getTypeId(), request.getUrl(), request.isConvertImg(), response.getWriter());
+        reptileService.crawlSingle(request, response.getWriter());
     }
 
     @PostMapping(value = "/pushToBaidu/{id}")
