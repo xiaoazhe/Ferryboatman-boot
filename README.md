@@ -1,8 +1,8 @@
-# Ferryman-cloud(摆渡人)
+# Ferryman-boot(摆渡人)
 
 
 
-####  Spring Cloud + Spring Boot + Vue
+####  Spring Boot(版本) + Vue
 
 环境部署操作
 https://blog.csdn.net/weixin_44045059/article/details/121723799
@@ -10,33 +10,97 @@ https://blog.csdn.net/weixin_44045059/article/details/121723799
 使用阿里云效Devops自动化部署前后端
 http://121.5.129.126:8880/#/login
 
-Spring Boot版 https://gitee.com/chongzhe/Ferryboatman-boot
+Spring Cloud版 https://gitee.com/chongzhe/Ferryman-cloud
 
-前台前端
+前台前端源代码
 [https://gitee.com/chongzhe/Ferryman-blog](http://)
 
-后台前端
-[https://gitee.com/chongzhe/Ferryman-admin](http://)
+后台前端源代码
+[https://gitee.com/chongzhe/Ferryboatman-admin](http://)
 
 GitHub
 [https://github.com/xiaoazhe/Ferryman-cloud](http://)
+
+## 平台简介
+
+
+
+## 后台系统内置功能
+
+#### 系统管理
+前端源码：https://gitee.com/chongzhe/Ferryboatman-admin
+预览：http://admin.ferryboat.top/
+1. 用户管理：用户是系统操作者，该功能主要完成系统用户配置。
+2. 机构管理：配置系统组织机构，树结构展现支持数据权限。
+3. 通知管理：通知管理。
+4. 菜单管理：配置系统菜单，操作权限，按钮权限标识等。
+5. 角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
+#### 博客管理
+6. 分类管理：博客分类进行维护。
+7. 内容管理：博客进行维护。
+8. 评论管理：博客进行维护。
+9. 音乐管理：前台浏览时候音乐播放。
+10. 前台用户：前台用户管理。
+#### 图片管理
+11. 人脸识别列表：图库管理，也是人脸识别登录映射。
+#### 系统运营
+12. 导航管理：导航系统的管理，源码：https://gitee.com/chongzhe/Ferryboatman-nav
+    预览：http://nav.ferryboat.top/
+13. 友链管理：博客进行维护 。
+14. 博客问答: 博客进行维护。
+15. 资料管理：博客进行维护。
+16. 闲聊管理：博客进行维护。
+17. 文章爬取：单篇、批量，csdn、博客园、oschain等博客，一键 拿来吧你。只用来搬运自己文章和转发，尊重知识产权归属
+#### 配置管理
+18. 字典管理：字典管理。
+19. 系统配置：账户配置 & 阿里云文件上传配置 & 七牛云文件上传配置，系统的各种文件上传的存储路径配置
+#### 系统监控
+20. 在线用户：在线用户。
+21. 登录日志：登录日志
+22. 操作日志：操作日志。
+23. 数据监控：数据库监控。
+24. 接口文档：丝袜哥。
+#### 其他
+25. 系统备份SQL，还原
+26. 后台主题切换
+27. 功能搜索
+28. 人脸识别登录
+29. 短信发送（无场景demo）
+30. 邮件发送（无场景demo）
+31. 死信队列延迟消息
+32. JS拉取摄像头拍照
+33. 微信服务号定时通知（无场景demo）
+34. 百度站长推送
+
+## 前台系统内置功能
+前端源码：https://gitee.com/chongzhe/Ferryman-blog
+预览：http://ferryboat.top/
+1. 博客：搜索，关注，查看，评论，回复，发布
+2. 提问：分类提问，回复，点赞，评论
+3. 匿名吐槽：发布吐槽，评论
+4. 资料链接：搜索自己想要的资料，开源~~白嫖
+5. 友链：推荐
+6. 个人中心：登录后的 发布记录，评论记录，浏览记录，点赞，收藏，解答等
+7. 登录，音乐播放，两种 Mavon-Editor、 Vue-Quill-Editor富文本编译器，富文本文件上传和base存储
+
+#### 使用说明
+
+#### Ferryboatman-boot 两个服务，
+##### admin对应前台代码
+后台前端源代码 使用vue
+[https://gitee.com/chongzhe/Ferryboatman-admin](http://)
+##### web
+前台前端源代码 使用nuxt
+[https://gitee.com/chongzhe/Ferryman-blog](http://)
+
+
+
 #### 软件架构
-
-
 
 |      后端技术      |           说明            |                             官网                             |
 | :------------: | :-----------------------: | :----------------------------------------------------------: |
 |   Spring Boot   |          MVC框架          | [ https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot) |
-|  Spring Cloud   |        微服务框架         |           https://spring.io/projects/spring-cloud/           |
-|  Spring Cloud Consul	   |        注册中心	         |           https://cloud.spring.io/spring-cloud-consul/reference/html/           |
-|  Spring Cloud Hystrix	   |        服务熔断	         |           https://spring.io/projects/spring-cloud/           |
-|  Spring Cloud Feign	   |        负载均衡	         |           https://spring.io/projects/spring-cloud-openfeign          |
-|  Spring Cloud Ribbon	   |        负载均衡	         |           https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-ribbon.html           |
-|  Spring Cloud Zuul	   |        服务网关         |           https://spring.io/projects/spring-cloud/           |
-|  Spring Cloud Admin	   |        服务监控	         |           https://spring.io/projects/spring-cloud/           |
-|  Spring Cloud Config	   |        服务配置中心	         |           https://spring.io/projects/spring-cloud/           |
 |  Spring Boot Actuator   |        应用监控	         |          https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html           |
-|  Spring Boot Bus   |        消息总线	         |          https://spring.io/projects/spring-cloud-bus           |
 | Spring Security |      认证和授权框架       |          https://spring.io/projects/spring-security          |
 |  MyBatis-Plus  |          ORM框架          |                   https://mp.baomidou.com/                   |
 |   Swagger-UI   |       文档生产工具        | [ https://github.com/swagger-api/swagger-ui](https://github.com/swagger-api/swagger-ui) |
@@ -60,20 +124,21 @@ GitHub
 
 
 
-|         前端技术          |                  说明                   |                             官网                             |
-| :-------------------: | :-------------------------------------: | :----------------------------------------------------------: |
-|        Vue.js         |                前端框架                 |                      https://vuejs.org/                      |
-|      Vue-router       |                路由框架                 |                  https://router.vuejs.org/                   |
-|         Vuex          |            全局状态管理框架             |                   https://vuex.vuejs.org/                    |
-|        Nuxt.js        |        创建服务端渲染 (SSR) 应用        |                    https://zh.nuxtjs.org/                    |
-|        Element        |               前端ui框架                |    [ https://element.eleme.io](https://element.eleme.io/)    |
-|         Axios         |              前端HTTP框架               | [ https://github.com/axios/axios](https://github.com/axios/axios) |
-|       Vue-Quill-Editor        |              富文本编辑器               |                    https://github.surmon.me/vue-quill-editor/                  |
-|     Less      |            CSS 预处理语言             |        http://lesscss.cn/          |
-|        Mavon-Editor         |             Markdown编辑器              |             https://github.com/hinesboy/mavonEditor            |
-|        Aplayer        |             音乐播放器            |             https://aplayer.js.org/#/            |
-|        Vue-i18n        |             国际化            |             https://kazupon.github.io/vue-i18n/zh/introduction.html           |
-|        Cookie        |             认证cookie&&缓存            |             https://www.runoob.com/js/js-cookies.html           |
+|         前端技术          |        说明        |                             官网                             |
+| :-------------------: |:----------------:| :----------------------------------------------------------: |
+|        Vue.js         |       前端框架       |                      https://vuejs.org/                      |
+|      Vue-router       |       路由框架       |                  https://router.vuejs.org/                   |
+|         Vuex          |     全局状态管理框架     |                   https://vuex.vuejs.org/                    |
+|        Nuxt.js        | 创建服务端渲染 (SSR) 应用 |                    https://zh.nuxtjs.org/                    |
+|        Element        |      前端ui框架      |    [ https://element.eleme.io](https://element.eleme.io/)    |
+|         Axios         |     前端HTTP框架     | [ https://github.com/axios/axios](https://github.com/axios/axios) |
+|       Vue-Quill-Editor        |      富文本编辑器      |                    https://github.surmon.me/vue-quill-editor/                  |
+|     Less      |    CSS 预处理语言     |        http://lesscss.cn/          |
+|        Mavon-Editor         |   Markdown编辑器    |             https://github.com/hinesboy/mavonEditor            |
+|        Aplayer        |      音乐播放器       |             https://aplayer.js.org/#/            |
+|        Vue-i18n        |       国际化        |             https://kazupon.github.io/vue-i18n/zh/introduction.html           |
+|        Cookie        |   认证cookie&&缓存   |             https://www.runoob.com/js/js-cookies.html           |
+|        d2-admin           |       后台模板       |             https://github.com/d2-projects/d2-admin           |
 
 
 
@@ -91,21 +156,6 @@ GitHub
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0714/231811_8f1815ca_2227854.png "屏幕截图.png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0714/231318_fa3136a8_2227854.png "屏幕截图.png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0714/231830_57b5c14f_2227854.png "屏幕截图.png")
-
-#### 使用说明
-
-1. windows/MAC安装consul，启动命令  consul agent -dev
-    启动 ferry-consul 模块的注册中心 
-    启动ferry-config模块
-2.  启动 ferry-admin 后台管理模块
-3.  启动 ferry-recover 数据备份模块
-4.  依次启动 ferry-web（服务提供者1）
-、ferry-webBalanced（服务提供者）
-、ferry-gossip（服务提供者2）
-、ferry-webConsumer（服务消费者）
-、ferry-hystrix（熔断器）
-、ferry-zuul（网关转发）
-
 
 #### 提醒
 后台音乐模块音乐上传需要搭建容器FDFS文件管理
