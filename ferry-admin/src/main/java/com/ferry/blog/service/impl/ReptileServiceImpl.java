@@ -16,6 +16,10 @@ import me.zhyd.hunter.entity.VirtualArticle;
 import me.zhyd.hunter.processor.BlogHunterProcessor;
 import me.zhyd.hunter.processor.HunterProcessor;
 import me.zhyd.hunter.util.HunterPrintWriter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -42,6 +46,31 @@ public class ReptileServiceImpl implements ReptileService {
     @Resource
     private IdWorker idWorker;
 
+    private static final String prefix = "https://juejin.cn";
+
+    public static void main(String[] args) throws Exception{
+        Document doc = Jsoup.connect("https://juejin.cn/user/3008695929418318/posts").execute().parse();
+        Elements uls = doc.getElementsByClass("entry-list list entry-list");
+
+        Elements span = uls.select("li");
+
+        for (Element element : span) {
+            Elements item = element.getElementsByClass("content-main");
+
+            if (item.size() < 1) {
+                continue;
+            }
+            String href = item.get(0).getElementsByClass("title").get(0).attr("href");
+            String title = item.get(0).getElementsByClass("title").text();
+            System.out.println(href + title);
+            String url = prefix + href;
+            Document document = Jsoup.connect(url).execute().parse();
+            Elements md = document.getElementsByClass("markdown-body cache");
+            System.out.println("--------");
+            System.out.println(md);
+            System.out.println("--------");
+        }
+    }
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void crawlSingle(ReptileRequest request, PrintWriter writer) {
