@@ -135,5 +135,5 @@ ferry:
 
 wechat:
   officialAccount:
-    appid: 1234
-    appSecret: 1234
+    appid:
+    appSecret:
