@@ -24,12 +24,15 @@ import com.ferry.web.service.ProblemService;
 import com.ferry.web.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -65,6 +68,10 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
     @Autowired
     private ProblemService problemService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    private static final String redisKey = "userFindSum";
     @Override
     public PageResult findPage(PageRequest pageRequest) {
         Page <BlBlog> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
@@ -77,6 +84,17 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         queryWrapper.eq(BlBlog.COL_IS_PUBLISH, "1");
         queryWrapper.orderByDesc(BlBlog.COL_SORT);
         Page<BlBlog> typePage = blogMapper.selectPage(page, queryWrapper);
+        Integer sum = (Integer)redisTemplate.opsForValue().get(redisKey);
+        if (Objects.nonNull(sum)) {
+            sum ++ ;
+        } else {
+            sum = 1;
+        }
+        try {
+            redisTemplate.boundValueOps(redisKey).set(sum, 7, TimeUnit.DAYS);
+        } catch (Exception e) {
+            log.error("缓存异常:", e);
+        }
         PageResult pageResult = new PageResult(typePage);
         return pageResult;
     }
