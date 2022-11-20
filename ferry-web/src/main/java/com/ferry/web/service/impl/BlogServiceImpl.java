@@ -261,6 +261,7 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         // 设置IP地址
         sysLog.setIp(IPUtils.getIpAddr(request));
         sysLog.setTime(0l);
+        sysLog.setCreateTime(new Date());
         sysLogMapper.insert(sysLog);
     }
 }
