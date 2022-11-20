@@ -15,10 +15,11 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
     <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="log_type" jdbcType="BIGINT" property="logType" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_name, `operation`, `method`, params, `time`, ip, create_by, create_time, 
+    id, user_name, `operation`, `method`, params, `time`, ip, create_by, create_time,
     last_update_by, last_update_time
   </sql>
 </mapper>

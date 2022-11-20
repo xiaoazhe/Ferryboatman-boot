@@ -11,6 +11,10 @@ import com.ferry.core.file.util.StringUtils;
 import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
+import com.ferry.core.utils.HttpUtils;
+import com.ferry.core.utils.IPUtils;
+import com.ferry.server.admin.entity.SysLog;
+import com.ferry.server.admin.mapper.SysLogMapper;
 import com.ferry.server.blog.entity.BlBlog;
 import com.ferry.server.blog.entity.BlComment;
 import com.ferry.server.blog.entity.BlMusic;
@@ -71,6 +75,9 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private SysLogMapper sysLogMapper;
+
     private static final String redisKey = "userFindSum";
     @Override
     public PageResult findPage(PageRequest pageRequest) {
@@ -84,16 +91,10 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         queryWrapper.eq(BlBlog.COL_IS_PUBLISH, "1");
         queryWrapper.orderByDesc(BlBlog.COL_SORT);
         Page<BlBlog> typePage = blogMapper.selectPage(page, queryWrapper);
-        Integer sum = (Integer)redisTemplate.opsForValue().get(redisKey);
-        if (Objects.nonNull(sum)) {
-            sum ++ ;
-        } else {
-            sum = 1;
-        }
         try {
-            redisTemplate.boundValueOps(redisKey).set(sum, 7, TimeUnit.DAYS);
+            saveLog();
         } catch (Exception e) {
-            log.error("缓存异常:", e);
+            log.error("异常:", e);
         }
         PageResult pageResult = new PageResult(typePage);
         return pageResult;
@@ -250,5 +251,16 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         queryWrapper.eq(BlMusic.COL_ENABLE, 1);
         queryWrapper.ne(BlMusic.COL_DELETED, 1);
         return musicMapper.selectList(queryWrapper);
+    }
+
+    private void saveLog() {
+        SysLog sysLog = new SysLog();
+        sysLog.setLogType(1);
+
+        HttpServletRequest request = HttpUtils.getHttpServletRequest();
+        // 设置IP地址
+        sysLog.setIp(IPUtils.getIpAddr(request));
+        sysLog.setTime(0l);
+        sysLogMapper.insert(sysLog);
     }
 }

@@ -17,10 +17,7 @@ import com.ferry.core.file.util.PoiUtils;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.server.admin.entity.*;
-import com.ferry.server.admin.mapper.SysDeptMapper;
-import com.ferry.server.admin.mapper.SysRoleMapper;
-import com.ferry.server.admin.mapper.SysUserMapper;
-import com.ferry.server.admin.mapper.SysUserRoleMapper;
+import com.ferry.server.admin.mapper.*;
 import com.ferry.server.blog.entity.BlBlog;
 import com.ferry.server.blog.mapper.BlBlogMapper;
 import org.apache.poi.ss.usermodel.Row;
@@ -36,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> implements SysUserService {
@@ -60,6 +58,9 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 	@Autowired
 	private RedisTemplate redisTemplate;
 
+	@Autowired
+	private SysLogMapper sysLogMapper;
+
 	private static final String redisKey = "userFindSum";
 
 	@Override
@@ -73,10 +74,14 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		queryWrapper.eq(BlBlog.COL_CREATE_BY, user.getName());
 		queryWrapper.orderByDesc(BlBlog.COL_CREATE_TIME);
 		List<BlBlog> blogList = blBlogMapper.selectList(queryWrapper);
-		Integer sum = (Integer)redisTemplate.opsForValue().get(redisKey);
+
+		QueryWrapper<SysLog> logQuery = new QueryWrapper<>();
+		logQuery.eq(SysLog.COL_LOG_TYPE, 1);
+		List<SysLog> logs = sysLogMapper.selectList(logQuery);
+//		Integer sum = (Integer)redisTemplate.opsForValue().get(redisKey);
 		map.put("blogClick", blogClick);
-		map.put("blogCollect", sum);
-		map.put("material", material);
+		map.put("ipSize", logs.stream().map(SysLog::getIp).distinct().collect(Collectors.toList()).size());
+		map.put("logSize", logs.size());
 		map.put("blogSize", blogList.size());
 		map.put("user", user);
 		map.put("blogList", blogList);
