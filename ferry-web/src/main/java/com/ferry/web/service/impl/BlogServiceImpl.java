@@ -210,6 +210,11 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         if (blog == null) {
             throw new RuntimeException(CommonStatusEnum.ERR);
         }
+        try {
+            saveLog();
+        } catch (Exception e) {
+            log.error("异常:", e);
+        }
         blogMapper.updateById(blog);
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("blog", blog);
