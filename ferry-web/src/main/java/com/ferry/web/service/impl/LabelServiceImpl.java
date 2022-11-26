@@ -75,9 +75,9 @@ public class LabelServiceImpl extends ServiceImpl <BlLabelMapper, BlLabel> imple
     @Override
     public List <BlLabel> toplist() {
         QueryWrapper <BlLabel> queryWrapper= new QueryWrapper <>();
-        queryWrapper.ne(BlLabel.COL_STATE, 0);
-        queryWrapper.orderByDesc(BlLabel.COL_FANS);
-        return labelMapper.selectList(queryWrapper);
+        queryWrapper.eq(BlLabel.COL_STATE, 1);
+        queryWrapper.orderByDesc(BlLabel.COL_COUNT);
+        return labelMapper.selectList(queryWrapper).stream().limit(6).collect(Collectors.toList());
     }
 
     @Override
