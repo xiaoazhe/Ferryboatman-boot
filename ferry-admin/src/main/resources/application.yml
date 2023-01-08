@@ -101,6 +101,10 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+  health:
+    redis:
+      #    defaults:   ---也可以禁用，不推荐
+      enabled: false
 fdfs:
   so-timeout: 2500
   connect-timeout: 600
@@ -137,3 +141,9 @@ wechat:
   officialAccount:
     appid:
     appSecret:
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: error
