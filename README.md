@@ -84,10 +84,10 @@ GitHub
 #### 使用说明
 
 #### Ferryboatman-boot 两个服务，
-##### admin对应前台代码
+##### admin前端后台
 后台前端源代码 使用vue
 [https://gitee.com/chongzhe/Ferryboatman-admin](http://)
-##### web
+##### web前端前台
 前台前端源代码 使用nuxt
 [https://gitee.com/chongzhe/Ferryman-blog](http://)
 
