@@ -107,7 +107,7 @@ public class BlMusic implements Serializable {
 
     public static final String COL_LRC = "lrc";
 
-    public static final String COL_CREATED_TIME = "created_time";
+    public static final String COL_CREATE_TIME = "create_time";
 
     public static final String COL_ENABLE = "enable";
 

@@ -17,6 +17,7 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -313,6 +314,9 @@ public class ProblemServiceImpl extends ServiceImpl <BlProblemMapper, BlProblem>
             Map map = new HashMap();
             map.put(BlProLabel.COL_LABELID, labelId);
             proLabelList = proLabelMapper.selectByMap(map);
+        }
+        if (CollectionUtils.isEmpty(proLabelList)) {
+            return new PageResult();
         }
         List<String> proIds = proLabelList.stream().
                 map(BlProLabel::getProblemid).collect(Collectors.toList());

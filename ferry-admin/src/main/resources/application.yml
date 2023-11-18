@@ -85,13 +85,13 @@ spring:
     scheduling:
       pool:
         size: 10
-      thread-name-prefix: hanhan
+      thread-name-prefix: task
     execution:
       shutdown:
         #线程关闭时是否等所有任务结束
         await-termination: false
         #线程最大的等待时间，防止线程陷入循环关不掉
-        await-termination-period: 10s
+        await-termination-period: 5s
 # 开放健康检查接口
 management:
   endpoints:
@@ -101,6 +101,10 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+  health:
+    redis:
+      #    defaults:   ---也可以禁用，不推荐
+      enabled: false
 fdfs:
   so-timeout: 2500
   connect-timeout: 600
@@ -137,5 +141,11 @@ ferry:
 
 wechat:
   officialAccount:
-    appid: 1234
-    appSecret: 1234
+    appid:
+    appSecret:
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: error

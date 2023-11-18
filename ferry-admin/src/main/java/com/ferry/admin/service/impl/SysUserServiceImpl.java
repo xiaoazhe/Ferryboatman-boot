@@ -17,10 +17,7 @@ import com.ferry.core.file.util.PoiUtils;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
 import com.ferry.server.admin.entity.*;
-import com.ferry.server.admin.mapper.SysDeptMapper;
-import com.ferry.server.admin.mapper.SysRoleMapper;
-import com.ferry.server.admin.mapper.SysUserMapper;
-import com.ferry.server.admin.mapper.SysUserRoleMapper;
+import com.ferry.server.admin.mapper.*;
 import com.ferry.server.blog.entity.BlBlog;
 import com.ferry.server.blog.mapper.BlBlogMapper;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,11 +27,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> implements SysUserService {
@@ -56,20 +55,33 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 	@Autowired
 	private BlBlogMapper blBlogMapper;
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
+	@Autowired
+	private SysLogMapper sysLogMapper;
+
+	private static final String redisKey = "userFindSum";
+
 	@Override
 	public Map findIntro() {
 		HashMap map = new HashMap();
 		SysUser user = sysUserMapper.findByName(SecurityUtils.getUsername());
 		Integer blogClick = blBlogMapper.getClickByCreantName(user.getName());
-		Integer blogCollect = blBlogMapper.getCollectByCreantName(user.getName());
+//		Integer blogCollect = blBlogMapper.getCollectByCreantName(user.getName());
 		Integer material = blBlogMapper.getMaterialByCreantName(user.getName());
 		QueryWrapper<BlBlog> queryWrapper = new QueryWrapper<>();
 		queryWrapper.eq(BlBlog.COL_CREATE_BY, user.getName());
 		queryWrapper.orderByDesc(BlBlog.COL_CREATE_TIME);
 		List<BlBlog> blogList = blBlogMapper.selectList(queryWrapper);
+
+		QueryWrapper<SysLog> logQuery = new QueryWrapper<>();
+		logQuery.eq(SysLog.COL_LOG_TYPE, 1);
+		List<SysLog> logs = sysLogMapper.selectList(logQuery);
+//		Integer sum = (Integer)redisTemplate.opsForValue().get(redisKey);
 		map.put("blogClick", blogClick);
-		map.put("blogCollect", blogCollect);
-		map.put("material", material);
+		map.put("ipSize", logs.stream().map(SysLog::getIp).distinct().collect(Collectors.toList()).size());
+		map.put("logSize", logs.size());
 		map.put("blogSize", blogList.size());
 		map.put("user", user);
 		map.put("blogList", blogList);
@@ -163,7 +175,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		}
 		return sysUserMapper.findByName(name);
 	}
-	
+
 	@Override
 	public PageResult findPage(PageRequest pageRequest) {
 		Page<SysUser> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
@@ -184,7 +196,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		findUserRoles(pageResult);
 		return pageResult;
 	}
-	
+
 	/**
 	 * 加载用户角色
 	 * @param pageResult
@@ -216,7 +228,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 	}
 
 	@Override
-	public Set<String> findPermissions(String userName) {	
+	public Set<String> findPermissions(String userName) {
 		Set<String> perms = new HashSet<>();
 		List<SysMenu> sysMenus = sysMenuService.findByUser(userName);
 		for(SysMenu sysMenu:sysMenus) {
@@ -233,7 +245,7 @@ public class SysUserServiceImpl extends ServiceImpl <SysUserMapper, SysUser> imp
 		queryWrapper.eq(SysUserRole.COL_USER_ID, userId);
 		return sysUserRoleMapper.selectList(queryWrapper);
 	}
-	
+
 	@Override
 	public File createUserExcelFile(PageRequest pageRequest) {
 		PageResult pageResult = findPage(pageRequest);

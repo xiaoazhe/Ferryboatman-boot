@@ -11,6 +11,10 @@ import com.ferry.core.file.util.StringUtils;
 import com.ferry.core.http.Result;
 import com.ferry.core.page.PageRequest;
 import com.ferry.core.page.PageResult;
+import com.ferry.core.utils.HttpUtils;
+import com.ferry.core.utils.IPUtils;
+import com.ferry.server.admin.entity.SysLog;
+import com.ferry.server.admin.mapper.SysLogMapper;
 import com.ferry.server.blog.entity.BlBlog;
 import com.ferry.server.blog.entity.BlComment;
 import com.ferry.server.blog.entity.BlMusic;
@@ -24,12 +28,15 @@ import com.ferry.web.service.ProblemService;
 import com.ferry.web.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -65,6 +72,13 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
     @Autowired
     private ProblemService problemService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private SysLogMapper sysLogMapper;
+
+    private static final String redisKey = "userFindSum";
     @Override
     public PageResult findPage(PageRequest pageRequest) {
         Page <BlBlog> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
@@ -74,8 +88,14 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         if (pageRequest.getEnabled()!= -1) {
             queryWrapper.eq(BlBlog.COL_TYPE_ID, pageRequest.getEnabled());
         }
-        queryWrapper.orderByDesc(BlBlog.COL_CREATE_TIME);
+        queryWrapper.eq(BlBlog.COL_IS_PUBLISH, "1");
+        queryWrapper.orderByDesc(BlBlog.COL_SORT);
         Page<BlBlog> typePage = blogMapper.selectPage(page, queryWrapper);
+        try {
+            saveLog();
+        } catch (Exception e) {
+            log.error("异常:", e);
+        }
         PageResult pageResult = new PageResult(typePage);
         return pageResult;
     }
@@ -166,10 +186,12 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         String userId = null;
         try {
             String token = request.getHeader(FieldStatusEnum.HEARD).substring(7);
-            Claims claims = jwtUtil.parseJWT(token);
-            userId = claims.getId();
-            if (userId != null) {
-                problemService.setCollect(id, 3);
+            if (!StringUtils.isBlank(token) && !StringUtils.equals("undefined", token)) {
+                Claims claims = jwtUtil.parseJWT(token);
+                userId = claims.getId();
+                if (userId != null) {
+                    problemService.setCollect(id, 3);
+                }
             }
         } catch (Exception e) {
 
@@ -187,6 +209,11 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         }
         if (blog == null) {
             throw new RuntimeException(CommonStatusEnum.ERR);
+        }
+        try {
+            saveLog();
+        } catch (Exception e) {
+            log.error("异常:", e);
         }
         blogMapper.updateById(blog);
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -229,5 +256,17 @@ public class BlogServiceImpl extends ServiceImpl <BlBlogMapper, BlBlog> implemen
         queryWrapper.eq(BlMusic.COL_ENABLE, 1);
         queryWrapper.ne(BlMusic.COL_DELETED, 1);
         return musicMapper.selectList(queryWrapper);
+    }
+
+    private void saveLog() {
+        SysLog sysLog = new SysLog();
+        sysLog.setLogType(1);
+
+        HttpServletRequest request = HttpUtils.getHttpServletRequest();
+        // 设置IP地址
+        sysLog.setIp(IPUtils.getIpAddr(request));
+        sysLog.setTime(0l);
+        sysLog.setCreateTime(new Date());
+        sysLogMapper.insert(sysLog);
     }
 }

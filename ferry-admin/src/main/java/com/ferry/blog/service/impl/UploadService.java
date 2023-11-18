@@ -46,7 +46,7 @@ public class UploadService {
             // 返回路径
             return uploadConfig.getBaseUrl() + storePath.getFullPath();
         } catch (IOException e) {
-            log.error("【文件上传】上传文件失败！....{}", e);
+            log.error("【文件上传】上传文件失败！....:", e);
             throw new RuntimeException("【文件上传】上传文件失败！" + e.getMessage());
         }
     }

@@ -83,6 +83,9 @@ public class SysLog {
     @TableField(value = "last_update_time")
     private Date lastUpdateTime;
 
+    @TableField(value = "log_type")
+    private Integer logType;
+
     public static final String COL_ID = "id";
 
     public static final String COL_USER_NAME = "user_name";
@@ -104,4 +107,6 @@ public class SysLog {
     public static final String COL_LAST_UPDATE_BY = "last_update_by";
 
     public static final String COL_LAST_UPDATE_TIME = "last_update_time";
+
+    public static final String COL_LOG_TYPE = "log_type";
 }

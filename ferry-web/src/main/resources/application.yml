@@ -92,6 +92,9 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+  health:
+    redis:
+      enabled: false
 fdfs:
   so-timeout: 2500
   connect-timeout: 600
