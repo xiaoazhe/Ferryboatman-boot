@@ -123,6 +123,8 @@ ai:
   secretKey: 6PXKB1XwQxluvFxUUiGtaGrSl4d9C9EN
   imageType: BASE64
   groupId: FerryMan
+  error:
+    switch: true
 qr:
   url: http://121.5.129.126:8880/#/facelogin
 ferry:

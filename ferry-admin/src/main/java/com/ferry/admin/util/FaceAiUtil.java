@@ -27,6 +27,8 @@ public class FaceAiUtil {
     private String IMAGE_TYPE;
     @Value("${ai.groupId}")
     private String groupId;
+    @Value("${ai.error.switch}")
+    private Boolean aiErrorSwitch;
 
     private AipFace client;
 
@@ -130,6 +132,7 @@ public class FaceAiUtil {
             } else {
                 res = client.search(image, "URL", groupId, options);
             }
+
             if (res.has("error_code") && res.getInt("error_code") == 0) {
                 JSONObject result = res.getJSONObject("result");
                 JSONArray userList = result.getJSONArray("user_list");
@@ -140,7 +143,7 @@ public class FaceAiUtil {
                         return user.getString("user_id");
                     }
                 }
-            } else {
+            } else if (aiErrorSwitch) {
                 logger.info("人脸识别失败，走默认管理员权限res :{} ", JSON.toJSONString(res));
                 return "1";
             }
